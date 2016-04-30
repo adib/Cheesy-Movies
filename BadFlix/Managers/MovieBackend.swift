@@ -8,7 +8,7 @@
 
 import Foundation
 
-private let backendConfigFileName = "GenreList.plist"
+private let backendConfigFileName = "BackendConfig.plist"
 
 private let apiKey = "900a1c8214b1686a76c5fd0f50150be0"
 
