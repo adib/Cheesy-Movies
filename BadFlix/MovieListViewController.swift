@@ -46,6 +46,16 @@ class MovieListViewController: UITableViewController {
     // MARK: - Segues
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        defer {
+            // fixup back button
+            if let  navController = segue.destinationViewController as? UINavigationController,
+                    topViewController = navController.topViewController,
+                    displayModeButtonItem = self.splitViewController?.displayModeButtonItem() {
+                let navItem  = topViewController.navigationItem
+                navItem.leftBarButtonItem = displayModeButtonItem
+                navItem.leftItemsSupplementBackButton = true
+            }
+        }
         if segue.identifier == "showDetail" {
             if let indexPath = self.tableView.indexPathForSelectedRow {
 //                let object = objects[indexPath.row] as! NSDate
