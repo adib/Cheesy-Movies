@@ -49,6 +49,8 @@
 			isa = PBXGroup;
 			children = (
 				C01344051CD4CE1700705FCD /* CastPhotoCollectionViewController.swift */,
+				C0FE2EE91CD459E000A73CA6 /* DetailViewController.swift */,
+				C0FE2EE71CD459E000A73CA6 /* MovieListViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -101,8 +103,6 @@
 				C011809B1CD48C2C00DF59CA /* Views */,
 				C011809C1CD48C2C00DF59CA /* Models */,
 				C0FE2EE51CD459E000A73CA6 /* AppDelegate.swift */,
-				C0FE2EE71CD459E000A73CA6 /* MovieListViewController.swift */,
-				C0FE2EE91CD459E000A73CA6 /* DetailViewController.swift */,
 				C0FE2EEB1CD459E000A73CA6 /* Main.storyboard */,
 				C0FE2EEE1CD459E000A73CA6 /* Assets.xcassets */,
 				C0FE2EF01CD459E000A73CA6 /* LaunchScreen.storyboard */,
