@@ -37,6 +37,7 @@ class MovieListViewController: UITableViewController {
         tableView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[searchOptionsView]|", options: [], metrics: nil, views: viewBindings))
         tableView.addConstraint(NSLayoutConstraint(item: searchOptionsView, attribute: .Bottom, relatedBy: .Equal, toItem: tableView, attribute: .Top, multiplier: 1, constant: 0))
         tableView.addConstraint(NSLayoutConstraint(item: searchOptionsView, attribute: .Width, relatedBy: .Equal, toItem: tableView, attribute: .Width, multiplier: 1, constant: 0))
+        tableView.addConstraint(NSLayoutConstraint(item: searchOptionsView, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .Width, multiplier: 1, constant: 216+44))
 
     }
 

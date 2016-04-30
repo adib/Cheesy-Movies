@@ -7,11 +7,14 @@
 //
 
 import UIKit
+import SafariServices
 
 class MovieDetailViewController: UIViewController {
 
     @IBOutlet weak var detailDescriptionLabel: UILabel!
 
+    var trailerViewController : SFSafariViewController?
+ 
 
     var detailItem: AnyObject? {
         didSet {
@@ -39,6 +42,14 @@ class MovieDetailViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    // MARK: - Actions
+    
+    @IBAction func showMovieTrailer(sender: AnyObject) {
+        
+    }
+    
+
 
 
 }
