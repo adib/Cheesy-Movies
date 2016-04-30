@@ -46,6 +46,7 @@ class MovieDetailViewController: UIViewController {
     // MARK: - Actions
     
     @IBAction func showMovieTrailer(sender: AnyObject) {
+        // TODO: get the trailer URL from the movie
         let urlString = "https://www.youtube.com/embed/qUp7Qgimn38"
         if let targetURL = NSURL(string:urlString) {
             let safariCtrl = SFSafariViewController(URL: targetURL, entersReaderIfAvailable: true)
@@ -55,6 +56,21 @@ class MovieDetailViewController: UIViewController {
         }
     }
     
+    @IBAction func showActivities(sender: AnyObject) {
+        // TODO: get the URL from the movie (either IMDB or the movie's home page
+        guard let shareURL = NSURL(string:"https://example.com") else {
+            return
+        }
+        
+        let activityCtrl = UIActivityViewController(activityItems: [shareURL], applicationActivities: nil)
+        
+        if let barButtonItem = sender as? UIBarButtonItem {
+            activityCtrl.modalPresentationStyle = .Popover
+            activityCtrl.popoverPresentationController?.barButtonItem = barButtonItem
+        }
+        
+        self.presentViewController(activityCtrl, animated: true, completion: nil)
+    }
 
 
 

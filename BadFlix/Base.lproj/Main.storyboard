@@ -357,7 +357,11 @@
                         </constraints>
                     </scrollView>
                     <navigationItem key="navigationItem" id="LTB-Hj-lLB">
-                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="TfP-Tl-aOY" userLabel="Share Button"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="TfP-Tl-aOY" userLabel="Share Button">
+                            <connections>
+                                <action selector="showActivities:" destination="Mor-o1-TcM" id="pdv-xb-2Et"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="1200"/>
