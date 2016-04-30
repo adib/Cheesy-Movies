@@ -46,7 +46,13 @@ class MovieDetailViewController: UIViewController {
     // MARK: - Actions
     
     @IBAction func showMovieTrailer(sender: AnyObject) {
-        
+        let urlString = "https://www.youtube.com/embed/qUp7Qgimn38"
+        if let targetURL = NSURL(string:urlString) {
+            let safariCtrl = SFSafariViewController(URL: targetURL, entersReaderIfAvailable: true)
+            self.presentViewController(safariCtrl, animated: true, completion: { 
+                self.trailerViewController = safariCtrl
+            })
+        }
     }
     
 
