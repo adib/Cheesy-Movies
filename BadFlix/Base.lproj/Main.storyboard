@@ -454,6 +454,10 @@
         <scene sceneID="F2X-Tf-iOa">
             <objects>
                 <viewController id="Rlm-na-gEQ" userLabel="Search Options" customClass="SearchOptionsViewController" customModule="BadFlix" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="cKd-4j-k3c"/>
+                        <viewControllerLayoutGuide type="bottom" id="OyF-bz-bQZ"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="hE9-af-bsd">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="260"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -509,8 +513,8 @@
                                         </constraints>
                                         <variation key="default">
                                             <mask key="constraints">
-                                                <exclude reference="e7t-xc-d66"/>
                                                 <exclude reference="HQe-D0-Uv0"/>
+                                                <exclude reference="e7t-xc-d66"/>
                                                 <exclude reference="EP0-nk-Zh0"/>
                                             </mask>
                                         </variation>

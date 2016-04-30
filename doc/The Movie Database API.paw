@@ -440,6 +440,7 @@
         <relationship name="request" type="0/1" destination="LMREQUEST" idrefs="z138"></relationship>
     </object>
     <object type="LMREQUEST" id="z140">
+        <attribute name="body" type="string">[{"data":{"json":"{}"},"identifier":"com.luckymarmot.JSONDynamicValue"}]</attribute>
         <attribute name="uuid" type="string">E8DD280F-DF91-48DD-B456-C24BE6F21ACB</attribute>
         <attribute name="url" type="string">[{"data":{"environmentVariable":"318A960A-47FC-49C9-8199-148E2E1BED92"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/search\\/movie?api_key=",{"data":{"environmentVariable":"A39E2201-176A-4775-AF12-86CC2AC30902"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\u2600query=Frozen\u2600year=2014"]</attribute>
         <attribute name="storecookies" type="bool">1</attribute>
