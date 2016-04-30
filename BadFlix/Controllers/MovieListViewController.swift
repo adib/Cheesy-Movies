@@ -10,7 +10,7 @@ import UIKit
 
 class MovieListViewController: UITableViewController {
 
-    var detailViewController: DetailViewController? = nil
+//    var detailViewController: DetailViewController? = nil
 //    var objects = [AnyObject]()
 
 
