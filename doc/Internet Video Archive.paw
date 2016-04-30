@@ -1,0 +1,119 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE database SYSTEM "file:///System/Library/DTDs/CoreData.dtd">
+
+<database>
+    <databaseInfo>
+        <version>134481920</version>
+        <UUID>452A3772-1DDE-4335-BF6C-6E29C98EB76A</UUID>
+        <nextObjectID>108</nextObjectID>
+        <metadata>
+            <plist version="1.0">
+                <dict>
+                    <key>NSPersistenceFrameworkVersion</key>
+                    <integer>641</integer>
+                    <key>NSStoreModelVersionHashes</key>
+                    <dict>
+                        <key>LMCookieJar</key>
+                        <data>
+		Fttmf2L4PrGvKUF496+nqgVVGek45TjOe7sUMtjNg8I=
+		</data>
+                        <key>LMEnvironment</key>
+                        <data>
+		uzBoVFcO4YvR9/3ej4AJ1UOOsA/u5DKY2aemusoIseU=
+		</data>
+                        <key>LMEnvironmentDomain</key>
+                        <data>
+		yM1GPGHdquS8IWLtuczlNoqKhIhD9FW6IReSfFffJgs=
+		</data>
+                        <key>LMEnvironmentVariable</key>
+                        <data>
+		P8e0lYd5JZKRabS/eXVSOJ4oitilz67xtv+pLqW1Jqg=
+		</data>
+                        <key>LMEnvironmentVariableValue</key>
+                        <data>
+		my5hNPJ51oDCSa8EgdNxWAnRcDLcERUGjtuXnzhSxQ0=
+		</data>
+                        <key>LMKeyValue</key>
+                        <data>
+		bIXXbyYF2xAv2MXg8JTVFsslmMKuvsfnR86QdUcFkdM=
+		</data>
+                        <key>LMRequest</key>
+                        <data>
+		vcehD1+Y0zJEqCmgqlTWLscXXTAat5YQbsUJSVqwTq0=
+		</data>
+                        <key>LMRequestGroup</key>
+                        <data>
+		MnZKiG/nHZ2bvbULv2vfzH+0tXd5w+NuuMPlNJjBAMw=
+		</data>
+                        <key>LMRequestTreeItem</key>
+                        <data>
+		Ae5GlAcsXxZOGKCPQgemYbXQ3+KUtHlsprrqBD+V81o=
+		</data>
+                    </dict>
+                    <key>NSStoreModelVersionHashesVersion</key>
+                    <integer>3</integer>
+                    <key>NSStoreModelVersionIdentifiers</key>
+                    <array>
+                        <string>LMDocumentVersion4</string>
+                    </array>
+                </dict>
+            </plist>
+        </metadata>
+    </databaseInfo>
+    <object type="LMREQUEST" id="z102">
+        <attribute name="uuid" type="string">64466794-8351-43FE-9910-20B64AEF878A</attribute>
+        <attribute name="url" type="string">[{"data":{"environmentVariable":"B9B551B6-22D3-4501-8F2B-637454C85878"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/DataService\\/VideoAssets()?$filter=cast((cast(ExpirationDate eq null,'Edm.Boolean') or ExpirationDate gt datetime'2015-06-18T21:18:04.6407898-04:00') and cast(RequiresIvaPlayer eq false,'Edm.Boolean') and cast(OkToEncodeAndServe eq true,'Edm.Boolean') and cast(WarningFlag eq false,'Edm.Boolean') and cast(AllowAds eq true,'Edm.Boolean') and cast(cast(LanguageSpokenId,'Edm.Int32') eq 0 and cast(LanguageSubtitledId,'Edm.Int32') eq -1 or cast(LanguageSubtitledId,'Edm.Int32') eq 0 and cast(LanguageSpokenId,'Edm.Int32') gt 0,'Edm.Boolean'),'Edm.Boolean')\u2600$skip=0\u2600$top=500\u2600$expand=EntertainmentProgram, EntertainmentProgram\\/AlternateIds\\/AlternateIdType,VideoAssetScreenCapture, CountryTarget,LanguageSpoken, LanguageSubtitled, MediaType,Encodes, RegionRestrictions, Descriptions\u2600format=json\u2600developerid=dd9a9172-4fbd-469c-bc92-a0955e9bdd6b"]</attribute>
+        <attribute name="storecookies" type="bool">1</attribute>
+        <attribute name="sendcookies" type="bool">1</attribute>
+        <attribute name="redirectmethod" type="bool">0</attribute>
+        <attribute name="redirectauthorization" type="bool">0</attribute>
+        <attribute name="method" type="string">GET</attribute>
+        <attribute name="followredirects" type="bool">0</attribute>
+        <attribute name="order" type="int64">0</attribute>
+        <attribute name="name" type="string">My API</attribute>
+        <relationship name="parent" type="0/1" destination="LMREQUESTTREEITEM"></relationship>
+        <relationship name="children" type="0/0" destination="LMREQUESTTREEITEM"></relationship>
+        <relationship name="headers" type="0/0" destination="LMKEYVALUE" idrefs="z107"></relationship>
+    </object>
+    <object type="LMENVIRONMENTDOMAIN" id="z103">
+        <attribute name="uuid" type="string">4FB1DEBA-9BF2-4998-8EED-933D6B6EFB54</attribute>
+        <attribute name="order" type="int64">0</attribute>
+        <attribute name="name" type="string">Default Domain</attribute>
+        <relationship name="environments" type="0/0" destination="LMENVIRONMENT" idrefs="z105"></relationship>
+        <relationship name="variables" type="0/0" destination="LMENVIRONMENTVARIABLE" idrefs="z106"></relationship>
+    </object>
+    <object type="LMCOOKIEJAR" id="z104">
+        <attribute name="uuid" type="string">E68F5D0B-A7BC-4C0A-8F92-34FC1A55CB39</attribute>
+        <attribute name="order" type="int64">1</attribute>
+        <attribute name="name" type="string">Default Jar</attribute>
+    </object>
+    <object type="LMENVIRONMENT" id="z105">
+        <attribute name="uuid" type="string">F408580E-4D8E-477F-9CCB-DDA8EC804F7E</attribute>
+        <attribute name="order" type="int64">0</attribute>
+        <attribute name="name" type="string">Default Environment</attribute>
+        <relationship name="domain" type="0/1" destination="LMENVIRONMENTDOMAIN" idrefs="z103"></relationship>
+        <relationship name="variablesvalues" type="0/0" destination="LMENVIRONMENTVARIABLEVALUE" idrefs="z108"></relationship>
+    </object>
+    <object type="LMENVIRONMENTVARIABLE" id="z106">
+        <attribute name="uuid" type="string">B9B551B6-22D3-4501-8F2B-637454C85878</attribute>
+        <attribute name="order" type="int64">0</attribute>
+        <attribute name="name" type="string">BASE_URL</attribute>
+        <relationship name="domain" type="0/1" destination="LMENVIRONMENTDOMAIN" idrefs="z103"></relationship>
+        <relationship name="values" type="0/0" destination="LMENVIRONMENTVARIABLEVALUE" idrefs="z108"></relationship>
+    </object>
+    <object type="LMKEYVALUE" id="z107">
+        <attribute name="value" type="string"></attribute>
+        <attribute name="order" type="int64">0</attribute>
+        <attribute name="name" type="string"></attribute>
+        <attribute name="enabled" type="bool">1</attribute>
+        <relationship name="groupforbodyparameters" type="0/1" destination="LMREQUESTGROUP"></relationship>
+        <relationship name="groupforheaders" type="0/1" destination="LMREQUESTGROUP"></relationship>
+        <relationship name="groupforurlparameters" type="0/1" destination="LMREQUESTGROUP"></relationship>
+        <relationship name="request" type="0/1" destination="LMREQUEST" idrefs="z102"></relationship>
+    </object>
+    <object type="LMENVIRONMENTVARIABLEVALUE" id="z108">
+        <attribute name="value" type="string">http://api.internetvideoarchive.com/2.0</attribute>
+        <relationship name="environment" type="1/1" destination="LMENVIRONMENT" idrefs="z105"></relationship>
+        <relationship name="variable" type="1/1" destination="LMENVIRONMENTVARIABLE" idrefs="z106"></relationship>
+    </object>
+</database>
