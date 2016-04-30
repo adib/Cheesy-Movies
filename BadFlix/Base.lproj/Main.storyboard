@@ -8,10 +8,10 @@
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
-        <!--Master-->
+        <!--Movie List Nav Controller-->
         <scene sceneID="pY4-Hu-kfo">
             <objects>
-                <navigationController title="Master" id="RMx-3f-FxP" sceneMemberID="viewController">
+                <navigationController title="Master" id="RMx-3f-FxP" userLabel="Movie List Nav Controller" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="Pmd-2v-anx">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -71,21 +71,21 @@
             </objects>
             <point key="canvasLocation" x="-856" y="-330"/>
         </scene>
-        <!--Master-->
+        <!--Movie List-->
         <scene sceneID="smW-Zh-WAh">
             <objects>
-                <tableViewController title="Master" clearsSelectionOnViewWillAppear="NO" id="7bK-jq-Zjz" customClass="MovieListViewController" customModule="BadFlix" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="singleLineEtched" rowHeight="202" sectionHeaderHeight="22" sectionFooterHeight="22" id="r7i-6Z-zg0">
+                <tableViewController title="Master" clearsSelectionOnViewWillAppear="NO" id="7bK-jq-Zjz" userLabel="Movie List" customClass="MovieListViewController" customModule="BadFlix" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="202" sectionHeaderHeight="22" sectionFooterHeight="22" id="r7i-6Z-zg0">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="separatorColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MovieSummaryCell" rowHeight="180" id="Kbw-6b-oCs" userLabel="Movie Cell">
                                 <rect key="frame" x="0.0" y="86" width="320" height="180"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Kbw-6b-oCs" id="QaJ-MN-Dka">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="179.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="180"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sample_backdrop_780.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="3Il-NT-484">
@@ -130,7 +130,7 @@
                                         <constraint firstItem="GH0-qj-7Az" firstAttribute="leading" secondItem="QaJ-MN-Dka" secondAttribute="leading" id="xLn-Gl-SEK"/>
                                     </constraints>
                                 </tableViewCellContentView>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <segue destination="iDg-73-cwV" kind="showDetail" id="3uW-ko-uUu"/>
                                 </connections>
@@ -143,12 +143,85 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Master" id="Zdf-7t-Un8">
-                        <barButtonItem key="rightBarButtonItem" systemItem="search" id="1JC-EQ-JET" userLabel="Search"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="search" id="1JC-EQ-JET" userLabel="Search">
+                            <connections>
+                                <action selector="toggleSearchOptions:" destination="7bK-jq-Zjz" id="AdR-Pc-lGb"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="600"/>
+                    <connections>
+                        <outlet property="genrePickerController" destination="V5r-E2-1am" id="3Ca-gb-1GF"/>
+                        <outlet property="searchOptionsView" destination="Gnn-2s-oNR" id="7T8-VO-UCI"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rux-fX-hf1" sceneMemberID="firstResponder"/>
+                <customObject id="V5r-E2-1am" customClass="GenrePickerController" customModule="BadFlix" customModuleProvider="target">
+                    <connections>
+                        <outlet property="pickerView" destination="eAu-pH-BfR" id="WyV-q2-2FM"/>
+                    </connections>
+                </customObject>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" id="Gnn-2s-oNR" userLabel="Search Options">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="222"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eAu-pH-BfR">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="178"/>
+                            <connections>
+                                <outlet property="dataSource" destination="V5r-E2-1am" id="ATU-Mz-XWd"/>
+                                <outlet property="delegate" destination="V5r-E2-1am" id="SKA-jp-g5z"/>
+                            </connections>
+                        </pickerView>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GqX-wm-tjq">
+                            <rect key="frame" x="0.0" y="178" width="320" height="44"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="300" verticalHuggingPriority="251" misplaced="YES" text="Release Year" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zxz-eM-Khf">
+                                    <rect key="frame" x="8" y="11" width="108" height="21"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="750" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="yyyy" textAlignment="right" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="rjz-zv-Doo">
+                                    <rect key="frame" x="134" y="8" width="81" height="30"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="search"/>
+                                </textField>
+                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WdT-P9-eef">
+                                    <rect key="frame" x="272" y="8" width="40" height="30"/>
+                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                    <state key="normal" title="Apply"/>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SnH-nE-22U">
+                                    <rect key="frame" x="227" y="8" width="39" height="30"/>
+                                    <state key="normal" title="Reset"/>
+                                </button>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="WdT-P9-eef" firstAttribute="leading" secondItem="rjz-zv-Doo" secondAttribute="trailing" constant="8" symbolic="YES" id="05z-wb-YLd"/>
+                                <constraint firstItem="SnH-nE-22U" firstAttribute="baseline" secondItem="WdT-P9-eef" secondAttribute="baseline" id="6h6-Yy-20p"/>
+                                <constraint firstAttribute="height" constant="44" id="6wI-rg-qz0"/>
+                                <constraint firstItem="Zxz-eM-Khf" firstAttribute="leading" secondItem="GqX-wm-tjq" secondAttribute="leadingMargin" id="9ja-Zm-Vfl"/>
+                                <constraint firstAttribute="trailing" secondItem="WdT-P9-eef" secondAttribute="trailing" constant="20" symbolic="YES" id="Cpu-FA-PGg"/>
+                                <constraint firstItem="SnH-nE-22U" firstAttribute="leading" secondItem="rjz-zv-Doo" secondAttribute="trailing" constant="8" symbolic="YES" id="FCr-Fc-huS"/>
+                                <constraint firstItem="rjz-zv-Doo" firstAttribute="leading" secondItem="Zxz-eM-Khf" secondAttribute="trailing" constant="8" symbolic="YES" id="FEP-8E-H5c"/>
+                                <constraint firstItem="Zxz-eM-Khf" firstAttribute="baseline" secondItem="rjz-zv-Doo" secondAttribute="baseline" id="KcH-ON-DJ1"/>
+                                <constraint firstItem="rjz-zv-Doo" firstAttribute="centerY" secondItem="GqX-wm-tjq" secondAttribute="centerY" id="XAj-xC-GXA"/>
+                                <constraint firstItem="WdT-P9-eef" firstAttribute="baseline" secondItem="rjz-zv-Doo" secondAttribute="baseline" id="aK0-bi-why"/>
+                                <constraint firstAttribute="bottom" secondItem="rjz-zv-Doo" secondAttribute="bottom" constant="20" symbolic="YES" id="oZ7-nr-qUU"/>
+                                <constraint firstItem="WdT-P9-eef" firstAttribute="leading" secondItem="SnH-nE-22U" secondAttribute="trailing" constant="8" symbolic="YES" id="w0j-h3-2TJ"/>
+                                <constraint firstItem="rjz-zv-Doo" firstAttribute="top" secondItem="GqX-wm-tjq" secondAttribute="top" constant="20" symbolic="YES" id="xQl-IF-hVq"/>
+                            </constraints>
+                            <variation key="default">
+                                <mask key="constraints">
+                                    <exclude reference="oZ7-nr-qUU"/>
+                                    <exclude reference="xQl-IF-hVq"/>
+                                    <exclude reference="05z-wb-YLd"/>
+                                </mask>
+                            </variation>
+                        </view>
+                    </subviews>
+                </stackView>
             </objects>
             <point key="canvasLocation" x="561" y="-630"/>
         </scene>

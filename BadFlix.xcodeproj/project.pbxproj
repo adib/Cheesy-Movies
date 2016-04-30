@@ -11,6 +11,7 @@
 		C01180A11CD49ECF00DF59CA /* sample_backdrop_780.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C011809F1CD49ECF00DF59CA /* sample_backdrop_780.jpg */; };
 		C01344041CD4C85900705FCD /* sample_profile_342.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C01344031CD4C85900705FCD /* sample_profile_342.jpg */; };
 		C01344061CD4CE1700705FCD /* CastPhotoCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01344051CD4CE1700705FCD /* CastPhotoCollectionViewController.swift */; };
+		C01344091CD4EED300705FCD /* GenrePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01344081CD4EED300705FCD /* GenrePickerController.swift */; };
 		C0FE2EE61CD459E000A73CA6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FE2EE51CD459E000A73CA6 /* AppDelegate.swift */; };
 		C0FE2EE81CD459E000A73CA6 /* MovieListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FE2EE71CD459E000A73CA6 /* MovieListViewController.swift */; };
 		C0FE2EEA1CD459E000A73CA6 /* MovieDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FE2EE91CD459E000A73CA6 /* MovieDetailViewController.swift */; };
@@ -24,6 +25,7 @@
 		C011809F1CD49ECF00DF59CA /* sample_backdrop_780.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sample_backdrop_780.jpg; sourceTree = "<group>"; };
 		C01344031CD4C85900705FCD /* sample_profile_342.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sample_profile_342.jpg; sourceTree = "<group>"; };
 		C01344051CD4CE1700705FCD /* CastPhotoCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastPhotoCollectionViewController.swift; sourceTree = "<group>"; };
+		C01344081CD4EED300705FCD /* GenrePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenrePickerController.swift; sourceTree = "<group>"; };
 		C0FE2EE21CD459E000A73CA6 /* BadFlix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BadFlix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0FE2EE51CD459E000A73CA6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C0FE2EE71CD459E000A73CA6 /* MovieListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListViewController.swift; sourceTree = "<group>"; };
@@ -51,6 +53,7 @@
 				C01344051CD4CE1700705FCD /* CastPhotoCollectionViewController.swift */,
 				C0FE2EE91CD459E000A73CA6 /* MovieDetailViewController.swift */,
 				C0FE2EE71CD459E000A73CA6 /* MovieListViewController.swift */,
+				C01344081CD4EED300705FCD /* GenrePickerController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -185,6 +188,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C01344091CD4EED300705FCD /* GenrePickerController.swift in Sources */,
 				C0FE2EEA1CD459E000A73CA6 /* MovieDetailViewController.swift in Sources */,
 				C0FE2EE81CD459E000A73CA6 /* MovieListViewController.swift in Sources */,
 				C01344061CD4CE1700705FCD /* CastPhotoCollectionViewController.swift in Sources */,
