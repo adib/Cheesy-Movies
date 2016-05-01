@@ -32,8 +32,56 @@ class MovieBackend {
     }
     
     
-    func refresh(completionHandler: dispatch_block_t) {
-        // TODO: refresh configuration
+    func refresh(completionHandler: ((NSError?) -> Void)? ) {
+        self.requestJSON("configuration") {
+            (jsonObject : AnyObject?, error : NSError?) in
+            defer {
+                completionHandler?(error)
+            }
+            if let jsonDict = jsonObject as? Dictionary<String,AnyObject> {
+                self.configuration = jsonDict
+                self.saveConfiguration()
+            }
+        }
+    }
+    
+    func requestJSON(path: String,completionHandler: (AnyObject?,NSError?) -> Void) {
+        let requestURL = backendURL.URLByAppendingPathComponent(path)
+        requestJSON(requestURL, completionHandler: completionHandler)
+    }
+    
+    func requestJSON(URL: NSURL,completionHandler: (AnyObject?,NSError?) -> Void) {
+        let task = NSURLSession.sharedSession().dataTaskWithURL(URL) {
+            (resultData : NSData?, _ : NSURLResponse?, requestError : NSError?) in
+            // TODO: handle error
+            var needReturn = true
+            var errorReturn : NSError? = nil
+            defer {
+                if needReturn {
+                    dispatch_async(dispatch_get_main_queue(), {
+                        completionHandler(nil,errorReturn)
+                    })
+                }
+            }
+            guard requestError == nil else {
+                errorReturn = requestError
+                return
+            }
+            if let resultDataObj = resultData {
+                do {
+                    let resultJSON = try NSJSONSerialization.JSONObjectWithData(resultDataObj, options: [])
+                    needReturn = false
+                    dispatch_async(dispatch_get_main_queue(), {
+                        completionHandler(resultJSON,nil)
+                    })
+                } catch let error as NSError {
+                    // TODO: handle error
+                    print("error refreshing config: \(error)")
+                    errorReturn = error
+                }
+            }
+        }
+        task.resume()
     }
 
     
@@ -42,7 +90,14 @@ class MovieBackend {
             return
         }
         
+        let processInfo = NSProcessInfo.processInfo()
+        let activityToken = processInfo.beginActivityWithOptions([.Background], reason: "Saving backend configuration")
+        
         dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0)) {
+            defer {
+                processInfo.endActivity(activityToken)
+            }
+
             let fileManager = NSFileManager.defaultManager()
             guard let cachesDir = fileManager.URLsForDirectory(.CachesDirectory, inDomains: .UserDomainMask).first,
                 pathString = cachesDir.URLByAppendingPathComponent(backendConfigFileName).path else {
@@ -51,5 +106,4 @@ class MovieBackend {
             NSKeyedArchiver.archiveRootObject(currentConfig, toFile: pathString)
         }
     }
-
 }

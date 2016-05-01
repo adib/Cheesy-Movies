@@ -42,7 +42,13 @@ class GenreList {
             return
         }
         
+        let processInfo = NSProcessInfo.processInfo()
+        let activityToken = processInfo.beginActivityWithOptions([.Background], reason: "Saving genre information")
+
         dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0)) {
+            defer {
+                processInfo.endActivity(activityToken)
+            }
             let fileManager = NSFileManager.defaultManager()
             guard let cachesDir = fileManager.URLsForDirectory(.CachesDirectory, inDomains: .UserDomainMask).first,
                     genrePathString = cachesDir.URLByAppendingPathComponent(genreListFileName).path else {

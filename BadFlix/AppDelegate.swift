@@ -13,9 +13,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
     var window: UIWindow?
 
-
+    
+    func refreshBackend() {
+        MovieBackend.defaultInstance.refresh({
+            (errorReturn : NSError?) in
+            if let error = errorReturn {
+                let alertCtrl = UIAlertController(
+                    title: NSLocalizedString("Backend error", comment:"Error title"),
+                    message: String(format:NSLocalizedString("Could not connect to server: %@", comment: "Error message"),error.localizedDescription),
+                    preferredStyle: .Alert)
+                // TODO: add an alternative action since this will result in an endless loop of prompts.
+                alertCtrl.addAction(UIAlertAction(title: NSLocalizedString("Try Again",comment:"Button"), style: .Default, handler: {
+                    (_ : UIAlertAction) in
+                    self.refreshBackend()
+                }))
+                self.window?.rootViewController?.presentViewController(alertCtrl, animated: true, completion: nil)
+            }
+        })
+    }    
+    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        refreshBackend()
         let splitViewController = self.window!.rootViewController as! UISplitViewController
         let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as! UINavigationController
         navigationController.topViewController!.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem()
