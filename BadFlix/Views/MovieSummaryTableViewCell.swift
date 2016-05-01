@@ -18,5 +18,6 @@ class MovieSummaryTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         self.backdropImageView.image = nil
+        self.titleLabel.text = " "
     }
 }
