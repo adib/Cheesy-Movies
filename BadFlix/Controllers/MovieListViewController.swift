@@ -117,14 +117,13 @@ class MovieListViewController: UITableViewController {
                 navItem.leftBarButtonItem = displayModeButtonItem
                 navItem.leftItemsSupplementBackButton = true
             }
-        }
-        if segue.identifier == "showDetail" {
-            if let indexPath = self.tableView.indexPathForSelectedRow {
-//                let object = objects[indexPath.row] as! NSDate
-//                let controller = (segue.destinationViewController as! UINavigationController).topViewController as! DetailViewController
-//                controller.detailItem = object
-//                controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem()
-//                controller.navigationItem.leftItemsSupplementBackButton = true
+        }        
+        if segue.identifier == "showMovie" {
+            if let  indexPath = self.tableView.indexPathForSelectedRow,
+                    selectedItem = searchResults?[indexPath.row],
+                    navController = segue.destinationViewController as? UINavigationController,
+                    detailController = navController.topViewController as? MovieDetailViewController {
+                detailController.item = selectedItem
             }
         }
     }
@@ -152,7 +151,7 @@ class MovieListViewController: UITableViewController {
         let row = indexPath.row
         
         if let  movieCell = cell as? MovieSummaryTableViewCell,
-                movieItem = searchResults?[row] {
+                movieItem = searchResults?[row]  {
             movieCell.titleLabel.text = movieItem.title
 
             var requestSize = CGSizeMake(tableView.bounds.width, tableView.rowHeight)

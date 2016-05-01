@@ -25,6 +25,10 @@ class MovieEntity {
     var genres : Array<GenreEntity>?
     var casts : Array<CastEntity>?
     
+    var homepageURLString : String?
+    
+    var trailerURLString : String?
+    
     init(json:[String:AnyObject]) {
         self.update(json)
     }
@@ -66,6 +70,24 @@ class MovieEntity {
                 castArray = creditsDict["cast"] as? [[String:AnyObject]] {
             casts = CastEntity.parse(castArray)
         }
+        
+        var homepage = json["homepage"] as? String
+        if homepage == nil || homepage?.isEmpty ?? true {
+            if let imdb = json["imdb_id"] as? String {
+                homepage = "https://www.imdb.com/title/\(imdb)/"
+            }
+        }
+        homepageURLString = homepage
+        
+        if let  videosDict = json["videos"] as? [String:AnyObject],
+                videoResults = videosDict["results"] as? [[String:AnyObject]],
+                firstVideo = videoResults.first {
+            if firstVideo["site"] as? String == "YouTube" {
+                if let youtubeID = firstVideo["key"] {
+                    trailerURLString = "https://www.youtube.com/embed/\(youtubeID)"
+                }
+            }
+        }
     }
     
     func posterURL(size: CGSize) -> NSURL? {
@@ -82,6 +104,27 @@ class MovieEntity {
         }
         
         return MovieBackend.defaultInstance.getImageURL(path, type: .Backdrop, size: size)
+    }
+    
+    func refresh(completionHandler: ((NSError?) -> Void)? ) {
+        guard let movieID = self.movieID else {
+            // TODO: report error of missing ID
+            completionHandler?(nil)
+            return
+        }
+        let params = [
+            "append_to_response" : "videos,credits"
+        ]
+        MovieBackend.defaultInstance.requestJSON("movie/\(movieID)",parameters: params, completionHandler:  {
+            (jsonObject,error) in
+            guard error == nil, let resultDict = jsonObject as? [String:AnyObject] else {
+                completionHandler?(error)
+                return
+            }
+            
+            self.update(resultDict)
+            completionHandler?(nil)
+        })
     }
     
     static func parse(json:[[String:AnyObject]]) -> [MovieEntity] {

@@ -134,7 +134,7 @@
                                 <connections>
                                     <outlet property="backdropImageView" destination="3Il-NT-484" id="XKC-tC-baZ"/>
                                     <outlet property="titleLabel" destination="uEc-Pn-Bdl" id="15r-rr-Dud"/>
-                                    <segue destination="iDg-73-cwV" kind="showDetail" id="3uW-ko-uUu"/>
+                                    <segue destination="iDg-73-cwV" kind="showDetail" identifier="showMovie" id="3uW-ko-uUu"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -231,7 +231,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yug-Cc-M1t" userLabel="Title Container">
                                         <rect key="frame" x="0.0" y="180" width="320" height="71"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="700" text="Runtime | Genre" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uNp-Ct-7hZ" userLabel="Summary Label">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="700" text="Runtime | Genre" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uNp-Ct-7hZ" userLabel="Subtitle Label">
                                                 <rect key="frame" x="8" y="49" width="304" height="13.5"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -271,7 +271,7 @@
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="300" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="💩 85%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yFw-DD-EZq" userLabel="Rating">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="300" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="💩 85%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yFw-DD-EZq" userLabel="Votes">
                                                 <rect key="frame" x="8" y="154.5" width="41" height="13.5"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="10" id="3bo-rn-QlH"/>
@@ -368,12 +368,20 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="1200"/>
                     <connections>
+                        <outlet property="backdropImageView" destination="ZAh-P5-dMX" id="jNK-ao-gK2"/>
+                        <outlet property="posterImageView" destination="Ccy-pf-Krw" id="Ln0-A5-pqv"/>
+                        <outlet property="productionHouseLabel" destination="62M-s9-SlY" id="6SP-33-bWx"/>
+                        <outlet property="subtitleLabel" destination="uNp-Ct-7hZ" id="nfb-fb-0Gd"/>
+                        <outlet property="summaryLabel" destination="zhg-61-zLl" id="jV9-77-4Xc"/>
+                        <outlet property="titleLabel" destination="hf1-zC-4Rp" id="4PX-N8-qaR"/>
+                        <outlet property="trailerPlayButton" destination="5JE-VD-WgZ" id="Zd0-Pm-ACu"/>
                         <outlet property="view" destination="X6o-2J-RGG" id="nq2-dQ-N0G"/>
+                        <outlet property="votesLabel" destination="yFw-DD-EZq" id="b7R-27-aGG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YGc-He-jXn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2134" y="-608"/>
+            <point key="canvasLocation" x="1878" y="-630"/>
         </scene>
         <!--Cast Collection View-->
         <scene sceneID="VlF-KV-HCc">
@@ -439,7 +447,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="k3F-mb-fJH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2705" y="-608.5"/>
+            <point key="canvasLocation" x="2333" y="-630"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="r7l-gg-dq7">
@@ -545,6 +553,7 @@
                 <customObject id="hM6-LY-0GJ" customClass="GenrePickerController" customModule="BadFlix" customModuleProvider="target"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CfO-LM-aMz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="534" y="48"/>
         </scene>
     </scenes>
     <resources>

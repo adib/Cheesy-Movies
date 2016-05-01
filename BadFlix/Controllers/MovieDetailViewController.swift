@@ -8,34 +8,125 @@
 
 import UIKit
 import SafariServices
+import AlamofireImage
 
 class MovieDetailViewController: UIViewController {
 
-    @IBOutlet weak var detailDescriptionLabel: UILabel!
+    @IBOutlet weak var backdropImageView: UIImageView?
 
+    @IBOutlet weak var titleLabel: UILabel?
+    @IBOutlet weak var subtitleLabel: UILabel?
+    
+    @IBOutlet weak var posterImageView: UIImageView?
+    @IBOutlet weak var summaryLabel: UILabel?
+    
+    @IBOutlet weak var votesLabel: UILabel?
+    
+    @IBOutlet weak var productionHouseLabel: UILabel!
+    
+    @IBOutlet weak var trailerPlayButton: UIButton!
+    
     var trailerViewController : SFSafariViewController?
  
-
-    var detailItem: AnyObject? {
-        didSet {
-            // Update the view.
-            self.configureView()
+    lazy var runtimeFormatter = {
+        () -> NSDateComponentsFormatter in
+        let formatter = NSDateComponentsFormatter()
+        formatter.unitsStyle = .Abbreviated
+        formatter.allowedUnits = [.Day,.Hour,.Minute]
+        return formatter
+    }()
+    
+    var item : MovieEntity?
+    
+    func reloadData() {
+        titleLabel?.text = item?.title ?? ""
+        
+        var subtitleText = String()
+        if let  runtimeMinutes = item?.runtime,
+                intervalText = runtimeFormatter.stringFromTimeInterval(Double(runtimeMinutes) * 60){
+            subtitleText += intervalText
         }
-    }
-
-    func configureView() {
-        // Update the user interface for the detail item.
-        if let detail = self.detailItem {
-            if let label = self.detailDescriptionLabel {
-                label.text = detail.description
+        
+        if let genresArray = item?.genres {
+            if !subtitleText.isEmpty {
+                subtitleText += " | "
             }
+            var genresStrings = Array<String>()
+            genresStrings.reserveCapacity(genresArray.count)
+            for genre in genresArray {
+                if let title = genre.title {
+                    genresStrings.append(title)
+                }
+            }
+            subtitleText += genresStrings.joinWithSeparator(", ")
         }
+        subtitleLabel?.text = subtitleText
+        summaryLabel?.text = item?.overview ?? ""
+        
+        if let voteAverage = item?.voteAverage {
+            let crapLevel = Int(round((10 - voteAverage) * 10))
+            votesLabel?.text = NSString.localizedStringWithFormat(NSLocalizedString("🧀 %d%%", comment: "Crap Level Percentage"), crapLevel) as String
+        } else {
+            votesLabel?.text = "-"
+        }
+        
+        productionHouseLabel?.text = item?.productionCompany ?? ""
+        trailerPlayButton?.hidden = item?.trailerURLString == nil
+        
+//        // TODO: images, refresh, actors
+//        reloadImages()
     }
 
+    func reloadImages() {
+        guard let   item = self.item,
+                    window = self.view?.window else {
+            return
+        }
+        let nativeScale = window.screen.nativeScale
+        let rescaleSize = {
+            (size: CGSize)-> CGSize in
+            if nativeScale > 1 {
+                return CGSizeMake(size.width * nativeScale, size.height * nativeScale)
+            }
+            return size
+        }
+
+        if let imageView = self.posterImageView,
+                imageURL = item.posterURL(rescaleSize(imageView.bounds.size)) {
+            imageView.af_setImageWithURL(imageURL)
+        }
+        
+        if let imageView = self.backdropImageView,
+            imageURL = item.backdropURL(rescaleSize(imageView.bounds.size)) {
+            imageView.af_setImageWithURL(imageURL)
+        }
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        self.configureView()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        if let item = self.item {
+            reloadData()
+            item.refresh({
+                (error) in
+                guard error == nil else {
+                    // TODO: report error
+                    return
+                }
+                self.reloadData()
+                self.reloadImages()
+            })
+        }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        // image view sizes may have changed, thus an opportunity to get appropriately-sized images
+        reloadImages()
     }
 
     override func didReceiveMemoryWarning() {
@@ -47,18 +138,21 @@ class MovieDetailViewController: UIViewController {
     
     @IBAction func showMovieTrailer(sender: AnyObject) {
         // TODO: get the trailer URL from the movie
-        let urlString = "https://www.youtube.com/embed/qUp7Qgimn38"
-        if let targetURL = NSURL(string:urlString) {
-            let safariCtrl = SFSafariViewController(URL: targetURL, entersReaderIfAvailable: true)
-            self.presentViewController(safariCtrl, animated: true, completion: { 
-                self.trailerViewController = safariCtrl
-            })
+        guard let   urlString = item?.trailerURLString,
+                targetURL = NSURL(string:urlString)  else {
+            return
         }
+        
+        let safariCtrl = SFSafariViewController(URL: targetURL, entersReaderIfAvailable: true)
+        self.presentViewController(safariCtrl, animated: true, completion: { 
+            self.trailerViewController = safariCtrl
+        })
     }
     
     @IBAction func showActivities(sender: AnyObject) {
         // TODO: get the URL from the movie (either IMDB or the movie's home page
-        guard let shareURL = NSURL(string:"https://example.com") else {
+        guard let shareURLstring = item?.homepageURLString,
+            shareURL = NSURL(string:shareURLstring) else {
             return
         }
         

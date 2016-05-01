@@ -130,7 +130,7 @@
     </object>
     <object type="LMREQUEST" id="z113">
         <attribute name="uuid" type="string">AABBF1AE-074E-442D-8085-47875C0BE05A</attribute>
-        <attribute name="url" type="string">[{"data":{"environmentVariable":"318A960A-47FC-49C9-8199-148E2E1BED92"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/discover\\/movie?sort_by=popularity.asc\u2600api_key=",{"data":{"environmentVariable":"A39E2201-176A-4775-AF12-86CC2AC30902"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\u2600primary_release_date.gte=2015-11-01\u2600vote_count.gte=150\u2600primary_release_date.lte=2016-05-01"]</attribute>
+        <attribute name="url" type="string">[{"data":{"environmentVariable":"318A960A-47FC-49C9-8199-148E2E1BED92"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/discover\\/movie?sort_by=popularity.asc\u2600api_key=",{"data":{"environmentVariable":"A39E2201-176A-4775-AF12-86CC2AC30902"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\u2600primary_release_date.gte=2015-11-01\u2600vote_count.gte=20\u2600primary_release_date.lte=2016-05-01"]</attribute>
         <attribute name="storecookies" type="bool">1</attribute>
         <attribute name="sendcookies" type="bool">1</attribute>
         <attribute name="redirectmethod" type="bool">0</attribute>
