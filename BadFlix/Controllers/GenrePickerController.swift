@@ -16,7 +16,7 @@ class GenrePickerController: NSObject,UIPickerViewDataSource,UIPickerViewDelegat
     
     @IBOutlet weak var pickerView: UIPickerView?
     
-    @IBOutlet weak var delegate : AnyObject?
+    @IBOutlet weak var delegate : GenrePickerControllerDelegate?
     
     func reloadData() {
         guard let genreMappings = genreList.currentMapping else {
