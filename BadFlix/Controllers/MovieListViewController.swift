@@ -13,6 +13,7 @@ private let searchOptionsAnimationDuration : NSTimeInterval = 0.2
 private let searchOptionsAnimationDelay  : NSTimeInterval = 0
 private let searchOptionsAnimationOptions : UIViewAnimationOptions =  [.BeginFromCurrentState, .CurveEaseOut]
 
+private let maxSearchResultsDisplay = 10
 
 class MovieListViewController: UITableViewController {
 
@@ -22,7 +23,17 @@ class MovieListViewController: UITableViewController {
     
     var showingSearchOptions = false
     
-    var searchResults : [MovieEntity]?
+    var searchResults : [MovieEntity]? {
+        didSet {
+            if let newValueArray = searchResults  {
+                let newCount = newValueArray.count
+                if newCount > maxSearchResultsDisplay {
+                    // Trim the results because the requirements says so
+                    searchResults?.removeRange(maxSearchResultsDisplay..<newCount)
+                }
+            }
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
