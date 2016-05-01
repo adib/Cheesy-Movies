@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreGraphics
 
 class MovieEntity {
     var movieID : Int64?
@@ -65,6 +66,22 @@ class MovieEntity {
                 castArray = creditsDict["cast"] as? [[String:AnyObject]] {
             casts = CastEntity.parse(castArray)
         }
+    }
+    
+    func posterURL(size: CGSize) -> NSURL? {
+        guard let path = posterPath else {
+            return nil
+        }
+        
+        return MovieBackend.defaultInstance.getImageURL(path, type: .Poster, size: size)
+    }
+    
+    func backdropURL(size:CGSize) -> NSURL? {
+        guard let path = backdropPath else {
+            return nil
+        }
+        
+        return MovieBackend.defaultInstance.getImageURL(path, type: .Backdrop, size: size)
     }
     
     static func parse(json:[[String:AnyObject]]) -> [MovieEntity] {

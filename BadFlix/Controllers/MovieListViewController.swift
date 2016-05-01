@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AlamofireImage
 
 private let searchOptionsAnimationDuration : NSTimeInterval = 0.2
 private let searchOptionsAnimationDelay  : NSTimeInterval = 0
@@ -14,9 +15,6 @@ private let searchOptionsAnimationOptions : UIViewAnimationOptions =  [.BeginFro
 
 
 class MovieListViewController: UITableViewController {
-
-//    var detailViewController: DetailViewController? = nil
-//    var objects = [AnyObject]()
 
     @IBOutlet var searchOptionsView: UIView!
     
@@ -145,7 +143,18 @@ class MovieListViewController: UITableViewController {
         if let  movieCell = cell as? MovieSummaryTableViewCell,
                 movieItem = searchResults?[row] {
             movieCell.titleLabel.text = movieItem.title
-            // TODO: poster image
+
+            var requestSize = CGSizeMake(tableView.bounds.width, tableView.rowHeight)
+            if let nativeScale = tableView.window?.screen.nativeScale {
+                if nativeScale > 1 {
+                    requestSize.width *= nativeScale
+                    requestSize.height *= nativeScale
+                }
+            }
+            
+            if let backdropURL = movieItem.backdropURL(requestSize) {
+                movieCell.backdropImageView.af_setImageWithURL(backdropURL)
+            }
         }
         return cell
     }

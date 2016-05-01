@@ -13,6 +13,12 @@ private let backendConfigFileName = "BackendConfig.plist"
 
 private let apiKey = "900a1c8214b1686a76c5fd0f50150be0"
 
+enum ImageType {
+    case Backdrop
+    case Poster
+    case Profile
+}
+
 class MovieBackend {
     static let defaultInstance = MovieBackend()
     
@@ -22,11 +28,14 @@ class MovieBackend {
     
     var configuration : Dictionary<String,AnyObject>?
     
+    var imageSizeMap  = Dictionary<ImageType,Array<(CGFloat,String)>>()
+    
     required init() {
         let fileManager = NSFileManager.defaultManager()
         if let cachesDir = fileManager.URLsForDirectory(.CachesDirectory, inDomains: .UserDomainMask).first,
             filePathString = cachesDir.URLByAppendingPathComponent(backendConfigFileName).path {
             if let dict = NSKeyedUnarchiver.unarchiveObjectWithFile(filePathString) as? Dictionary<String,AnyObject> {
+                self.imageSizeMap.removeAll(keepCapacity:true)
                 self.configuration = dict
             }
         }
@@ -62,6 +71,58 @@ class MovieBackend {
             ( response : Response<AnyObject,NSError>) in
             completionHandler(response.result.value,response.result.error)
         }
+    }
+    
+    func getImageURL(path:String,type:ImageType,size: CGSize) -> NSURL? {
+        guard let   currentConfig = self.configuration,
+                    imageConfig = currentConfig["images"] as? [String:AnyObject],
+                    imageBaseString = imageConfig["secure_base_url"] as? String else {
+            return nil
+        }
+        
+        var sizesArrayOpt = imageSizeMap[type]
+        if sizesArrayOpt == nil {
+            let sizesKey : String
+            switch type {
+            case .Backdrop:
+                sizesKey = "backdrop_sizes"
+            case .Poster:
+                sizesKey = "poster_sizes"
+            case .Profile:
+                sizesKey = "profile_sizes"
+            }
+            if let  sizesList = imageConfig[sizesKey] as? [String] {
+                let sizesCount = sizesList.count
+                if sizesCount > 0 {
+                    sizesArrayOpt = Array<(CGFloat,String)>()
+                    sizesArrayOpt?.reserveCapacity(sizesList.count)
+                    for entry in sizesList {
+                        if entry.hasPrefix("w") {
+                            if let floatValue = Float(entry.substringFromIndex(entry.startIndex.successor())) {
+                                sizesArrayOpt?.append((CGFloat(floatValue),entry))
+                            }
+                        }
+                    }
+                    imageSizeMap[type] = sizesArrayOpt
+                }
+            }
+        }
+        
+        guard let sizesArray = sizesArrayOpt else {
+            return nil
+        }
+
+        var sizePath = "original"
+        for (width,path) in sizesArray {
+            if width >= size.width {
+                sizePath = path
+                break
+            }
+        }
+        
+        let urlString = "\(imageBaseString)\(sizePath)\(path)"
+        
+        return NSURL(string: urlString)
     }
 
     

@@ -14,8 +14,9 @@ class MovieSummaryTableViewCell: UITableViewCell {
     
     @IBOutlet weak var titleLabel: UILabel!
     
+    
     override func prepareForReuse() {
         super.prepareForReuse()
-        // TODO: reset image view
+        self.backdropImageView.image = nil
     }
 }

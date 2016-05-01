@@ -33,7 +33,7 @@
 		72DEF6D4C1B64A4CBCED0077 /* Pods-BadFlix.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BadFlix.release.xcconfig"; path = "Pods/Target Support Files/Pods-BadFlix/Pods-BadFlix.release.xcconfig"; sourceTree = "<group>"; };
 		7FC2AE0DE8D3B4921E70025B /* Pods_BadFlix.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BadFlix.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C011809E1CD49ECF00DF59CA /* sample_poster_342.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sample_poster_342.jpg; sourceTree = "<group>"; };
-		C011809F1CD49ECF00DF59CA /* sample_backdrop_780.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = sample_backdrop_780.jpg; path = ../Resources/sample_backdrop_780.jpg; sourceTree = "<group>"; };
+		C011809F1CD49ECF00DF59CA /* sample_backdrop_780.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sample_backdrop_780.jpg; sourceTree = "<group>"; };
 		C01344031CD4C85900705FCD /* sample_profile_342.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sample_profile_342.jpg; sourceTree = "<group>"; };
 		C01344051CD4CE1700705FCD /* CastPhotoCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastPhotoCollectionViewController.swift; sourceTree = "<group>"; };
 		C01344081CD4EED300705FCD /* GenrePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenrePickerController.swift; sourceTree = "<group>"; };
@@ -92,7 +92,6 @@
 				C0FE2EE91CD459E000A73CA6 /* MovieDetailViewController.swift */,
 				C0FE2EE71CD459E000A73CA6 /* MovieListViewController.swift */,
 				C01344081CD4EED300705FCD /* GenrePickerController.swift */,
-				C011809F1CD49ECF00DF59CA /* sample_backdrop_780.jpg */,
 				C013440A1CD4F9CA00705FCD /* SearchOptionsViewController.swift */,
 			);
 			path = Controllers;
@@ -122,6 +121,7 @@
 			children = (
 				C01344031CD4C85900705FCD /* sample_profile_342.jpg */,
 				C011809E1CD49ECF00DF59CA /* sample_poster_342.jpg */,
+				C011809F1CD49ECF00DF59CA /* sample_backdrop_780.jpg */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
