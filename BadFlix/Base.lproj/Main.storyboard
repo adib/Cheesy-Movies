@@ -577,4 +577,5 @@
     <resources>
         <image name="PlayButton" width="64" height="64"/>
     </resources>
+    <color key="tintColor" red="0.98039215686274506" green="0.88627450980392153" blue="0.36862745098039218" alpha="1" colorSpace="calibratedRGB"/>
 </document>
