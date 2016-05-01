@@ -522,6 +522,7 @@
                                                 </connections>
                                             </button>
                                         </subviews>
+                                        <color key="tintColor" red="0.93333333333333335" green="0.59999999999999998" blue="0.23137254901960785" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstItem="Vde-aG-TjH" firstAttribute="baseline" secondItem="bqd-KL-StJ" secondAttribute="baseline" id="BNJ-kM-uPH"/>
                                             <constraint firstItem="Vde-aG-TjH" firstAttribute="leading" secondItem="bqd-KL-StJ" secondAttribute="trailing" constant="8" symbolic="YES" id="EP0-nk-Zh0"/>
