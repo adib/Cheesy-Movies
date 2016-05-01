@@ -10,17 +10,26 @@ import Foundation
 
 
 class GenreEntity : NSObject,NSCoding {
-    var title = ""
+    var title : String?
     var genreID = Int64(0)
     
     required init?(coder aDecoder: NSCoder) {
         super.init()
-        title = aDecoder.decodeObjectForKey("title") as? String ?? ""
+        title = aDecoder.decodeObjectForKey("title") as? String
         genreID = aDecoder.decodeInt64ForKey("genreID")
     }
     
+    init(json:[String:AnyObject]) {
+        if let number = json["id"] as? NSNumber {
+            genreID = number.longLongValue
+        }
+        title = json["name"] as? String
+    }
+    
     func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(title, forKey: "title")
+        if let v = title {
+            aCoder.encodeObject(v, forKey: "title")
+        }
         aCoder.encodeInt64(genreID, forKey: "genreID")
     }
 }

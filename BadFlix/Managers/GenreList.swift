@@ -18,8 +18,33 @@ class GenreList {
     
     
     
-    func refresh(completionHandler: dispatch_block_t) {
+    func refresh(completionHandler: ((NSError?) -> Void)? ) {
         // TODO: refresh list of genres
+        MovieBackend.defaultInstance.requestJSON("genre/movie/list") {
+            (result, error) in
+            guard error == nil else {
+                completionHandler?(error)
+                return
+            }
+            
+            if let resultDict = result as? [String:AnyObject] {
+                if let genresArray = resultDict["genres"] as? [[String:AnyObject]] {
+                    var mapping = Dictionary<Int64,GenreEntity>(minimumCapacity:genresArray.count)
+                    for genreDict in genresArray {
+                        let genreObj = GenreEntity(json: genreDict)
+                        if genreObj.genreID != 0 {
+                            mapping[genreObj.genreID] = genreObj
+                        }
+                    }
+                    if mapping.count > 0 {
+                        self.currentMapping = mapping
+                        self.save()
+                    }
+                }
+            }
+
+            completionHandler?(nil)
+        }
     }
     
     required init() {

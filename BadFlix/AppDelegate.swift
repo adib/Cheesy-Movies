@@ -30,6 +30,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
                 self.window?.rootViewController?.presentViewController(alertCtrl, animated: true, completion: nil)
             }
         })
+        
+        GenreList.defaultInstance.refresh(nil)
     }    
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
