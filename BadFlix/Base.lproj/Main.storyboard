@@ -504,6 +504,9 @@
                                                 <rect key="frame" x="114" y="7" width="88" height="30"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="search"/>
+                                                <connections>
+                                                    <outlet property="delegate" destination="Rlm-na-gEQ" id="trf-Pe-1wv"/>
+                                                </connections>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vde-aG-TjH">
                                                 <rect key="frame" x="257" y="6" width="43" height="30"/>

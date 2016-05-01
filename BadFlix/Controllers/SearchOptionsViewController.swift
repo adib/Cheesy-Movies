@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SearchOptionsViewController: UIViewController,GenrePickerControllerDelegate {
+class SearchOptionsViewController: UIViewController,GenrePickerControllerDelegate,UITextFieldDelegate {
 
     @IBOutlet var genrePickerController: GenrePickerController!
     
@@ -80,8 +80,16 @@ class SearchOptionsViewController: UIViewController,GenrePickerControllerDelegat
         setNeedsUpdateSearchResults()
     }
     
+
+    // MARK: - UITextFieldDelegate
     
-    // MARK: - GenrePickerControllerDelegate?
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        setNeedsUpdateSearchResults()
+        return true
+    }
+    
+    // MARK: - GenrePickerControllerDelegate
     func genrePickerController(ctrl: GenrePickerController, didSelectGenre genre: GenreEntity?) {
         selectedGenre = genre
         setNeedsUpdateSearchResults()
