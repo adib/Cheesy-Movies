@@ -4,6 +4,6 @@
 use_frameworks!
 
 target 'BadFlix' do
-
+	pod 'Alamofire', '3.3.1'
 end
 
