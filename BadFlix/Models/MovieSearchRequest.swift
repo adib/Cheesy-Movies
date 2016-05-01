@@ -36,6 +36,8 @@ struct MovieSearchRequest {
             params["primary_release_date.gte"] = MovieSearchRequest.dateFormatter.stringFromDate(date)
         }
         params["primary_release_date.lte"] = MovieSearchRequest.dateFormatter.stringFromDate(today)
+        
+        requestParameters = params
         requestPath = "discover/movie"
         // TODO: sort function
         sortFunction = {

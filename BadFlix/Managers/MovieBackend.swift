@@ -61,7 +61,7 @@ class MovieBackend {
 
     func requestJSON(path: String,parameters:[String:AnyObject]?,completionHandler: (AnyObject?,NSError?) -> Void) {
         let requestURL = backendURL.URLByAppendingPathComponent(path)
-        requestJSON(requestURL, parameters:nil,completionHandler: completionHandler)
+        requestJSON(requestURL, parameters:parameters,completionHandler: completionHandler)
     }
     
     func requestJSON(URL: NSURL,parameters : [String:AnyObject]? ,completionHandler: (AnyObject?,NSError?) -> Void) {
