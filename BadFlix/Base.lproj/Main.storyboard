@@ -208,11 +208,9 @@
                                                     <constraint firstAttribute="width" secondItem="ZAh-P5-dMX" secondAttribute="height" multiplier="16:9" id="gq2-oo-yca"/>
                                                 </constraints>
                                             </imageView>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoDark" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5JE-VD-WgZ" userLabel="Play Button">
-                                                <rect key="frame" x="149" y="79" width="22" height="22"/>
-                                                <state key="normal">
-                                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                </state>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5JE-VD-WgZ" userLabel="Play Button">
+                                                <rect key="frame" x="128" y="58" width="64" height="64"/>
+                                                <state key="normal" image="PlayButton"/>
                                                 <connections>
                                                     <action selector="showMovieTrailer:" destination="Mor-o1-TcM" eventType="touchUpInside" id="ygD-mE-MPg"/>
                                                 </connections>
@@ -576,4 +574,7 @@
             <point key="canvasLocation" x="534" y="48"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="PlayButton" width="64" height="64"/>
+    </resources>
 </document>
