@@ -26,6 +26,8 @@ class MovieDetailViewController: UIViewController {
     
     @IBOutlet weak var trailerPlayButton: UIButton!
     
+    weak var castCollectionViewController : CastPhotoCollectionViewController?
+    
     var trailerViewController : SFSafariViewController?
  
     lazy var runtimeFormatter = {
@@ -73,8 +75,10 @@ class MovieDetailViewController: UIViewController {
         productionHouseLabel?.text = item?.productionCompany ?? ""
         trailerPlayButton?.hidden = item?.trailerURLString == nil
         
-//        // TODO: images, refresh, actors
-//        reloadImages()
+        if let castCtrl = castCollectionViewController {
+            castCtrl.item = item?.casts
+            castCtrl.reloadData()
+        }
     }
 
     func reloadImages() {
@@ -99,6 +103,10 @@ class MovieDetailViewController: UIViewController {
         if let imageView = self.backdropImageView,
             imageURL = item.backdropURL(rescaleSize(imageView.bounds.size)) {
             imageView.af_setImageWithURL(imageURL)
+        }
+        
+        if let castCtrl = castCollectionViewController {
+            castCtrl.setNeedsReloadImages()
         }
     }
     
@@ -132,6 +140,16 @@ class MovieDetailViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let segueIdentifier = segue.identifier
+        if segueIdentifier == "embedCastCollectionView" {
+            if let castCollectionCtrl = segue.destinationViewController as? CastPhotoCollectionViewController {
+                castCollectionViewController = castCollectionCtrl
+                castCollectionCtrl.item = item?.casts
+            }
+        }
     }
     
     // MARK: - Actions

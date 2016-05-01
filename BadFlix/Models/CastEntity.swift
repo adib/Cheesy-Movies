@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreGraphics
 
 class CastEntity {
     var castID = Int64(0)
@@ -22,6 +23,15 @@ class CastEntity {
         performerName = json["name"] as? String
         profilePath = json ["profile_path"] as? String
     }
+    
+    func profileURL(size: CGSize) -> NSURL? {
+        guard let path = profilePath else {
+            return nil
+        }
+        
+        return MovieBackend.defaultInstance.getImageURL(path, type: .Profile, size: size)
+    }
+
     
     static func parse(json:[[String:AnyObject]]) -> [CastEntity] {
         var resultArray = Array<CastEntity>()

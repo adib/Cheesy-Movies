@@ -11,23 +11,14 @@ import UIKit
 private let reuseIdentifier = "ActorPhotoCell"
 
 class CastPhotoCollectionViewController: UICollectionViewController {
-
+    
+    var item : [CastEntity]?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Register cell classes
-//        self.collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-
-        // Do any additional setup after loading the view.
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -35,20 +26,36 @@ class CastPhotoCollectionViewController: UICollectionViewController {
         if let flowLayout = self.collectionViewLayout as? UICollectionViewFlowLayout {
             var itemSize  = bounds.size
             itemSize.width = round(bounds.size.height * 2 / 3)
-            flowLayout.itemSize = itemSize
+            if flowLayout.itemSize != itemSize {
+                flowLayout.itemSize = itemSize
+                setNeedsReloadImages()
+            }
+        }
+    }
+    
+    func reloadData() {
+        self.collectionView?.reloadData()
+    }
+    
+    func setNeedsReloadImages() {
+        let sel = #selector(CastPhotoCollectionViewController.reloadImages)
+        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: sel, object: nil)
+        self.performSelector(sel, withObject: nil, afterDelay: 0)
+    }
+    
+    func reloadImages() {
+        guard let collectionView = self.collectionView else {
+            return
         }
         
+        let visibleIndexes = collectionView.indexPathsForVisibleItems()
+        collectionView.reloadItemsAtIndexPaths(visibleIndexes)
     }
-
+    
     /*
     // MARK: - Navigation
+     */
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
 
     // MARK: UICollectionViewDataSource
 
@@ -59,47 +66,44 @@ class CastPhotoCollectionViewController: UICollectionViewController {
 
 
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
-        return 10
+        guard let item = self.item else {
+            return 0
+        }
+        return item.count
     }
 
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath)
     
+        if let actorCell = cell as? ActorPhotoCollectionViewCell,
+                castItem = item?[indexPath.row] {
+            actorCell.actorNameLabel?.text = castItem.performerName
+            actorCell.characterNameLabel?.text = castItem.characterName
+            
+            let nativeScale = collectionView.window?.screen.nativeScale ?? 1
+            let rescaleSize = {
+                (size: CGSize)-> CGSize in
+                if nativeScale > 1 {
+                    return CGSizeMake(size.width * nativeScale, size.height * nativeScale)
+                }
+                return size
+            }
+
+            var itemSize = CGSizeMake(200,200)
+            // at this point of time, the collectionView item may not have laid out its subviews, hence we can't ask for the image view's size
+            // the next best thing would be to use the layout's item size
+            if let flowLayout = self.collectionViewLayout as? UICollectionViewFlowLayout {
+                itemSize = rescaleSize(flowLayout.itemSize)
+            }
+            
+            if let imageURL = castItem.profileURL(itemSize) {
+                actorCell.profileImageView?.af_setImageWithURL(imageURL)
+            }
+        }
         // Configure the cell
     
         return cell
     }
 
-    // MARK: UICollectionViewDelegate
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(collectionView: UICollectionView, shouldHighlightItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(collectionView: UICollectionView, shouldShowMenuForItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(collectionView: UICollectionView, canPerformAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) -> Bool {
-        return false
-    }
-
-    override func collectionView(collectionView: UICollectionView, performAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) {
-    
-    }
-    */
 
 }

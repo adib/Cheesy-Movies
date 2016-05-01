@@ -330,7 +330,7 @@
                                                     </mask>
                                                 </variation>
                                                 <connections>
-                                                    <segue destination="kKl-pl-i2T" kind="embed" id="OM4-ri-L9y"/>
+                                                    <segue destination="kKl-pl-i2T" kind="embed" identifier="embedCastCollectionView" id="OM4-ri-L9y"/>
                                                 </connections>
                                             </containerView>
                                         </subviews>
@@ -398,7 +398,7 @@
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ActorPhotoCell" id="pp4-06-3Ed">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ActorPhotoCell" id="pp4-06-3Ed" customClass="ActorPhotoCollectionViewCell" customModule="BadFlix" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="25" width="100" height="100"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -408,16 +408,16 @@
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="pUX-Pu-9Pj">
                                             <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" misplaced="YES" image="sample_profile_342.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="9XA-Ug-xGN">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9XA-Ug-xGN">
                                                     <rect key="frame" x="0.0" y="0.0" width="100" height="73"/>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="755" misplaced="YES" text="Adam Sandler" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="hMh-4U-kRW" userLabel="Actor Name">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="755" misplaced="YES" text="Miles O'Brien" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="hMh-4U-kRW" userLabel="Actor Name">
                                                     <rect key="frame" x="0.0" y="73" width="100" height="14"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="250" misplaced="YES" text="Tommy aka White Knife" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="TgP-40-i3L" userLabel="Character Name">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="250" misplaced="YES" text="The Chief" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="TgP-40-i3L" userLabel="Character Name">
                                                     <rect key="frame" x="0.0" y="87" width="100" height="14"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -434,6 +434,11 @@
                                     <constraint firstItem="pUX-Pu-9Pj" firstAttribute="leading" secondItem="pp4-06-3Ed" secondAttribute="leading" id="qXe-EP-cHj"/>
                                     <constraint firstItem="pUX-Pu-9Pj" firstAttribute="top" secondItem="pp4-06-3Ed" secondAttribute="top" id="qvz-bu-sHl"/>
                                 </constraints>
+                                <connections>
+                                    <outlet property="actorNameLabel" destination="hMh-4U-kRW" id="yOW-16-MYe"/>
+                                    <outlet property="characterNameLabel" destination="TgP-40-i3L" id="fWu-wz-19T"/>
+                                    <outlet property="profileImageView" destination="9XA-Ug-xGN" id="JGC-fe-EQD"/>
+                                </connections>
                             </collectionViewCell>
                         </cells>
                         <connections>
@@ -559,6 +564,5 @@
     <resources>
         <image name="sample_backdrop_780.jpg" width="780" height="439"/>
         <image name="sample_poster_342.jpg" width="342" height="513"/>
-        <image name="sample_profile_342.jpg" width="342" height="513"/>
     </resources>
 </document>

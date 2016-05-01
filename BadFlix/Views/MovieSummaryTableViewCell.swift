@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AlamofireImage
 
 class MovieSummaryTableViewCell: UITableViewCell {
     
@@ -17,7 +18,10 @@ class MovieSummaryTableViewCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        self.backdropImageView.image = nil
+        if let backdropImageView = self.backdropImageView {
+            backdropImageView.af_cancelImageRequest()
+            backdropImageView.image = nil
+        }
         self.titleLabel.text = " "
     }
 }
