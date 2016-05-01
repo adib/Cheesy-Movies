@@ -21,12 +21,12 @@ class MovieSearchRequest : NSObject {
         }
         return movie1.movieID ?? 0 < movie2.movieID ?? 0
     }
-
     
     static let dateFormatter = {
         () -> NSDateFormatter in
         let df = NSDateFormatter()
         df.dateFormat = "yyyy-MM-dd"
+        // use ISO calendar since we're using this formatter for making Backend API calls
         df.calendar = NSCalendar(identifier: NSCalendarIdentifierISO8601)
         return df
     }()
@@ -73,9 +73,10 @@ class MovieSearchRequest : NSObject {
                     if let nextYearDate = calendar.dateByAddingUnit(.Year, value: 1, toDate: yearStartDate, options: [.MatchFirst]) {
                         var nextYearStartDateOpt : NSDate? = nil
                         if calendar.rangeOfUnit(.Year, startDate: &nextYearStartDateOpt, interval:nil,forDate:nextYearDate),
-                            let nextYearStartDate = nextYearStartDateOpt {
-                            let nextYearStartDateStr = MovieSearchRequest.dateFormatter.stringFromDate(nextYearStartDate)
-                            params["primary_release_date.lte"] = nextYearStartDateStr
+                            let nextYearStartDate = nextYearStartDateOpt,
+                                thisYearEndDate = calendar.dateByAddingUnit(.Day, value: -1, toDate: nextYearStartDate, options: [.MatchFirst,.SearchBackwards]) {
+                            let thisYearEndDateStr = MovieSearchRequest.dateFormatter.stringFromDate(thisYearEndDate)
+                            params["primary_release_date.lte"] = thisYearEndDateStr
                         }
                     }
                 }
