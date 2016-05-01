@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Alamofire
 
 private let backendConfigFileName = "BackendConfig.plist"
 
@@ -47,41 +48,16 @@ class MovieBackend {
     
     func requestJSON(path: String,completionHandler: (AnyObject?,NSError?) -> Void) {
         let requestURL = backendURL.URLByAppendingPathComponent(path)
-        requestJSON(requestURL, completionHandler: completionHandler)
+        requestJSON(requestURL, parameters:nil,completionHandler: completionHandler)
     }
     
-    func requestJSON(URL: NSURL,completionHandler: (AnyObject?,NSError?) -> Void) {
-        let task = NSURLSession.sharedSession().dataTaskWithURL(URL) {
-            (resultData : NSData?, _ : NSURLResponse?, requestError : NSError?) in
-            // TODO: handle error
-            var needReturn = true
-            var errorReturn : NSError? = nil
-            defer {
-                if needReturn {
-                    dispatch_async(dispatch_get_main_queue(), {
-                        completionHandler(nil,errorReturn)
-                    })
-                }
-            }
-            guard requestError == nil else {
-                errorReturn = requestError
-                return
-            }
-            if let resultDataObj = resultData {
-                do {
-                    let resultJSON = try NSJSONSerialization.JSONObjectWithData(resultDataObj, options: [])
-                    needReturn = false
-                    dispatch_async(dispatch_get_main_queue(), {
-                        completionHandler(resultJSON,nil)
-                    })
-                } catch let error as NSError {
-                    // TODO: handle error
-                    print("error refreshing config: \(error)")
-                    errorReturn = error
-                }
-            }
+    func requestJSON(URL: NSURL,parameters : [String:AnyObject]? ,completionHandler: (AnyObject?,NSError?) -> Void) {
+        var requestParams = parameters ?? Dictionary<String,AnyObject>()
+        requestParams["api_key"] = apiKey
+        Alamofire.request(.GET, URL,parameters: requestParams).responseJSON {
+            ( response : Response<AnyObject,NSError>) in
+            completionHandler(response.result.value,response.result.error)
         }
-        task.resume()
     }
 
     
