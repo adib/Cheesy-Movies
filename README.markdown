@@ -27,6 +27,13 @@
 2. Press the Play button in Xcode to build and run for the Simulator.
 3. Enjoy those cheesy movies!
 
+### Folder Structure
+
+- `BadFlix` – Main app sources.
+- `doc/screenshots` – Screenshots taken from the iOS Simulator.
+- `assets` – original files for the icon and button glyphs.
+- `Pods` – Cocoapods-managed sources.
+
 
 Copyright(C) 2016 Sasmito Adibowo. All rights reserved.
 
