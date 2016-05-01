@@ -32,4 +32,30 @@ class GenreEntity : NSObject,NSCoding {
         }
         aCoder.encodeInt64(genreID, forKey: "genreID")
     }
+    
+    
+    override func isEqual(object: AnyObject?) -> Bool {
+        guard let otherGenre = object as? GenreEntity else {
+            return false
+        }
+        return otherGenre.genreID == genreID
+    }
+
+    override var hash : Int {
+        get {
+            return Int(genreID)
+        }
+    }
+    
+    static func parse(json:[[String:AnyObject]]) -> [GenreEntity] {
+        var resultArray = Array<GenreEntity>()
+        resultArray.reserveCapacity(json.count)
+        for genreDict in json {
+            let genreObj = GenreEntity(json: genreDict)
+            if genreObj.genreID != 0 {
+                resultArray.append(genreObj)
+            }
+        }
+        return resultArray
+    }
 }

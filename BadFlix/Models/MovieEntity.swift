@@ -24,4 +24,84 @@ class MovieEntity {
     var genres : Array<GenreEntity>?
     var casts : Array<CastEntity>?
     
+    init(json:[String:AnyObject]) {
+        self.update(json)
+    }
+    
+    func update(json:[String:AnyObject]) {
+        if let number = json["id"] as? NSNumber {
+            movieID = number.longLongValue
+        }
+        title = json["original_title"] as? String
+        overview = json["overview"] as? String
+        if let dateStr = json["release_date"] as? String {
+            releaseDate = MovieSearchRequest.dateFormatter.dateFromString(dateStr)
+        }
+        
+        if let number = json["popularity"] as? NSNumber {
+            popularity = number.floatValue
+        }
+        if let number = json["vote_average"] as? NSNumber {
+            voteAverage = number.floatValue
+        }
+        
+        if let companies = json["production_companies"] as? [[String:AnyObject]],
+                firstCompany = companies.first  {
+            productionCompany = firstCompany["name"] as? String
+        }
+        
+        if let number = json["runtime"] as? NSNumber {
+            runtime = number.floatValue
+        }
+        
+        posterPath = json["poster_path"] as? String
+        backdropPath = json["backdrop_path"] as? String
+        
+        if let genresArray = json["genres"] as? [[String:AnyObject]] {
+            genres = GenreEntity.parse(genresArray)
+        }
+
+        if let  creditsDict = json["credits"] as? [String:AnyObject],
+                castArray = creditsDict["cast"] as? [[String:AnyObject]] {
+            casts = CastEntity.parse(castArray)
+        }
+    }
+    
+    static func parse(json:[[String:AnyObject]]) -> [MovieEntity] {
+        var resultArray = Array<MovieEntity>()
+        resultArray.reserveCapacity(json.count)
+        for dict in json {
+            let obj = MovieEntity(json: dict)
+            if obj.movieID != nil {
+                resultArray.append(obj)
+            }
+        }
+        return resultArray
+    }
+
+    static func search(request:MovieSearchRequest,completionHandler: ([MovieEntity]?,NSError?) -> Void) {
+        let backend = MovieBackend.defaultInstance
+        backend.requestJSON(request.requestPath, parameters: request.requestParameters) {
+            (resultObject, resultError) in
+            guard resultError == nil else {
+                completionHandler(nil,resultError)
+                return
+            }
+            if let  resultDict = resultObject as? [String:AnyObject],
+                    resultEntries = resultDict["results"] as? [[String:AnyObject]] {
+                dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0), { 
+                    var moviesArray = MovieEntity.parse(resultEntries)
+                    if let sortFunction = request.sortFunction {
+                        moviesArray.sortInPlace(sortFunction)
+                    }
+                    dispatch_async(dispatch_get_main_queue(), {
+                        completionHandler(moviesArray,nil)
+                    })
+                })
+            } else {
+                completionHandler(nil,nil)
+            }
+        }
+    }
+    
 }

@@ -45,8 +45,12 @@ class MovieBackend {
             }
         }
     }
-    
+
     func requestJSON(path: String,completionHandler: (AnyObject?,NSError?) -> Void) {
+        requestJSON(path,parameters:nil,completionHandler: completionHandler)
+    }
+
+    func requestJSON(path: String,parameters:[String:AnyObject]?,completionHandler: (AnyObject?,NSError?) -> Void) {
         let requestURL = backendURL.URLByAppendingPathComponent(path)
         requestJSON(requestURL, parameters:nil,completionHandler: completionHandler)
     }

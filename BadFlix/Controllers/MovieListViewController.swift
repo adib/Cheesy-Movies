@@ -23,6 +23,8 @@ class MovieListViewController: UITableViewController {
     @IBOutlet var genrePickerController: GenrePickerController!
     
     var showingSearchOptions = false
+    
+    var searchResults : [MovieEntity]?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,24 +40,29 @@ class MovieListViewController: UITableViewController {
         tableView.addConstraint(NSLayoutConstraint(item: searchOptionsView, attribute: .Bottom, relatedBy: .Equal, toItem: tableView, attribute: .Top, multiplier: 1, constant: 0))
         tableView.addConstraint(NSLayoutConstraint(item: searchOptionsView, attribute: .Width, relatedBy: .Equal, toItem: tableView, attribute: .Width, multiplier: 1, constant: 0))
         tableView.addConstraint(NSLayoutConstraint(item: searchOptionsView, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .Width, multiplier: 1, constant: 216+44))
+        
 
     }
 
     override func viewWillAppear(animated: Bool) {
-        self.clearsSelectionOnViewWillAppear = self.splitViewController!.collapsed
         super.viewWillAppear(animated)
+        if searchResults == nil {
+            MovieEntity.search(MovieSearchRequest()) {
+                [weak self] (entities, error) in
+                guard error == nil else {
+                    print("Search error: \(error?.localizedDescription)")
+                    return
+                }
+                self?.searchResults = entities
+                self?.tableView.reloadData()
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-//    func insertNewObject(sender: AnyObject) {
-//        objects.insert(NSDate(), atIndex: 0)
-//        let indexPath = NSIndexPath(forRow: 0, inSection: 0)
-//        self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-//    }
 
     // MARK: - Actions
 
@@ -120,7 +127,10 @@ class MovieListViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        if let items = searchResults {
+            return items.count
+        }
+        return 0
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -130,9 +140,13 @@ class MovieListViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("MovieSummaryCell", forIndexPath: indexPath)
-
-//        let object = objects[indexPath.row] as! NSDate
-//        cell.textLabel!.text = object.description
+        let row = indexPath.row
+        
+        if let  movieCell = cell as? MovieSummaryTableViewCell,
+                movieItem = searchResults?[row] {
+            movieCell.titleLabel.text = movieItem.title
+            // TODO: poster image
+        }
         return cell
     }
 
