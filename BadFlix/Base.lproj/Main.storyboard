@@ -202,7 +202,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ERJ-hJ-X8h" userLabel="Backdrop Container">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="180"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sample_backdrop_780.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="ZAh-P5-dMX" userLabel="Backdrop Image">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZAh-P5-dMX" userLabel="Backdrop Image">
                                                 <rect key="frame" x="0.0" y="0.0" width="320" height="180"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="ZAh-P5-dMX" secondAttribute="height" multiplier="16:9" id="gq2-oo-yca"/>
@@ -258,7 +258,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lpg-He-QEm" userLabel="Poster Container">
                                         <rect key="frame" x="0.0" y="251" width="320" height="176"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sample_poster_342.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="Ccy-pf-Krw" userLabel="Poster Image">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ccy-pf-Krw" userLabel="Poster Image">
                                                 <rect key="frame" x="8" y="8" width="92.5" height="139"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="Ccy-pf-Krw" secondAttribute="height" multiplier="2:3" id="nNZ-r7-ySd"/>
@@ -561,8 +561,4 @@
             <point key="canvasLocation" x="534" y="48"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="sample_backdrop_780.jpg" width="780" height="439"/>
-        <image name="sample_poster_342.jpg" width="342" height="513"/>
-    </resources>
 </document>

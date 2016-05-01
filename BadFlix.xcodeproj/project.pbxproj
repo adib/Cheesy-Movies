@@ -8,9 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		BCD0B274548F0E908920560F /* Pods_BadFlix.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FC2AE0DE8D3B4921E70025B /* Pods_BadFlix.framework */; };
-		C01180A01CD49ECF00DF59CA /* sample_poster_342.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C011809E1CD49ECF00DF59CA /* sample_poster_342.jpg */; };
-		C01180A11CD49ECF00DF59CA /* sample_backdrop_780.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C011809F1CD49ECF00DF59CA /* sample_backdrop_780.jpg */; };
-		C01344041CD4C85900705FCD /* sample_profile_342.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C01344031CD4C85900705FCD /* sample_profile_342.jpg */; };
 		C01344061CD4CE1700705FCD /* CastPhotoCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01344051CD4CE1700705FCD /* CastPhotoCollectionViewController.swift */; };
 		C01344091CD4EED300705FCD /* GenrePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01344081CD4EED300705FCD /* GenrePickerController.swift */; };
 		C013440B1CD4F9CA00705FCD /* SearchOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C013440A1CD4F9CA00705FCD /* SearchOptionsViewController.swift */; };
@@ -33,9 +30,6 @@
 /* Begin PBXFileReference section */
 		72DEF6D4C1B64A4CBCED0077 /* Pods-BadFlix.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BadFlix.release.xcconfig"; path = "Pods/Target Support Files/Pods-BadFlix/Pods-BadFlix.release.xcconfig"; sourceTree = "<group>"; };
 		7FC2AE0DE8D3B4921E70025B /* Pods_BadFlix.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BadFlix.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C011809E1CD49ECF00DF59CA /* sample_poster_342.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sample_poster_342.jpg; sourceTree = "<group>"; };
-		C011809F1CD49ECF00DF59CA /* sample_backdrop_780.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sample_backdrop_780.jpg; sourceTree = "<group>"; };
-		C01344031CD4C85900705FCD /* sample_profile_342.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sample_profile_342.jpg; sourceTree = "<group>"; };
 		C01344051CD4CE1700705FCD /* CastPhotoCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CastPhotoCollectionViewController.swift; sourceTree = "<group>"; };
 		C01344081CD4EED300705FCD /* GenrePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenrePickerController.swift; sourceTree = "<group>"; };
 		C013440A1CD4F9CA00705FCD /* SearchOptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchOptionsViewController.swift; sourceTree = "<group>"; };
@@ -122,9 +116,7 @@
 		C011809D1CD497DA00DF59CA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				C01344031CD4C85900705FCD /* sample_profile_342.jpg */,
-				C011809E1CD49ECF00DF59CA /* sample_poster_342.jpg */,
-				C011809F1CD49ECF00DF59CA /* sample_backdrop_780.jpg */,
+				C0FE2EEE1CD459E000A73CA6 /* Assets.xcassets */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -166,7 +158,6 @@
 				C011809C1CD48C2C00DF59CA /* Models */,
 				C0FE2EE51CD459E000A73CA6 /* AppDelegate.swift */,
 				C0FE2EEB1CD459E000A73CA6 /* Main.storyboard */,
-				C0FE2EEE1CD459E000A73CA6 /* Assets.xcassets */,
 				C0FE2EF01CD459E000A73CA6 /* LaunchScreen.storyboard */,
 				C0FE2EF31CD459E000A73CA6 /* Info.plist */,
 			);
@@ -234,12 +225,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C01180A11CD49ECF00DF59CA /* sample_backdrop_780.jpg in Resources */,
 				C0FE2EF21CD459E000A73CA6 /* LaunchScreen.storyboard in Resources */,
 				C0FE2EEF1CD459E000A73CA6 /* Assets.xcassets in Resources */,
-				C01180A01CD49ECF00DF59CA /* sample_poster_342.jpg in Resources */,
 				C0FE2EED1CD459E000A73CA6 /* Main.storyboard in Resources */,
-				C01344041CD4C85900705FCD /* sample_profile_342.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
