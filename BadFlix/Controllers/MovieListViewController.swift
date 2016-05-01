@@ -15,11 +15,11 @@ private let searchOptionsAnimationOptions : UIViewAnimationOptions =  [.BeginFro
 
 private let maxSearchResultsDisplay = 10
 
-class MovieListViewController: UITableViewController {
+class MovieListViewController: UITableViewController,SearchOptionsViewControllerDelegate {
 
     @IBOutlet var searchOptionsView: UIView!
     
-    @IBOutlet var genrePickerController: GenrePickerController!
+    weak var searchOptionsController : SearchOptionsViewController?
     
     var showingSearchOptions = false
     
@@ -117,13 +117,19 @@ class MovieListViewController: UITableViewController {
                 navItem.leftBarButtonItem = displayModeButtonItem
                 navItem.leftItemsSupplementBackButton = true
             }
-        }        
-        if segue.identifier == "showMovie" {
+        }
+        let segueIdentifier = segue.identifier
+        if segueIdentifier == "showMovie" {
             if let  indexPath = self.tableView.indexPathForSelectedRow,
                     selectedItem = searchResults?[indexPath.row],
                     navController = segue.destinationViewController as? UINavigationController,
                     detailController = navController.topViewController as? MovieDetailViewController {
                 detailController.item = selectedItem
+            }
+        } else if segueIdentifier == "embedSearchOptions" {
+            if let searchCtrl = segue.destinationViewController as? SearchOptionsViewController {
+                searchCtrl.delegate = self
+                self.searchOptionsController = searchCtrl
             }
         }
     }
@@ -204,7 +210,19 @@ class MovieListViewController: UITableViewController {
             })
         }
     }
-
-
+    
+    // MARK: - SearchOptionsViewControllerDelegate
+    
+    func searchOptionsViewController(ctrl: SearchOptionsViewController, updateMovieSearchRequest: MovieSearchRequest) {
+        MovieEntity.search(updateMovieSearchRequest) {
+            [weak self] (entities, error) in
+            guard error == nil else {
+                print("Search error: \(error?.localizedDescription)")
+                return
+            }
+            self?.searchResults = entities
+            self?.tableView.reloadData()
+        }
+    }
 }
 

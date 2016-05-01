@@ -162,7 +162,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="216"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <connections>
-                        <segue destination="Rlm-na-gEQ" kind="embed" id="FJ8-JZ-bl9"/>
+                        <segue destination="Rlm-na-gEQ" kind="embed" identifier="embedSearchOptions" id="FJ8-JZ-bl9"/>
                     </connections>
                 </containerView>
             </objects>
@@ -509,10 +509,16 @@
                                                 <rect key="frame" x="257" y="6" width="43" height="30"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                                 <state key="normal" title="Apply"/>
+                                                <connections>
+                                                    <action selector="applyForm:" destination="Rlm-na-gEQ" eventType="touchUpInside" id="SS3-d1-ggb"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MVx-3k-ceI">
                                                 <rect key="frame" x="210" y="6" width="39" height="30"/>
                                                 <state key="normal" title="Reset"/>
+                                                <connections>
+                                                    <action selector="resetForm:" destination="Rlm-na-gEQ" eventType="touchUpInside" id="nwI-QE-67e"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <constraints>
@@ -541,7 +547,7 @@
                                 </subviews>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="d2W-me-XZD" firstAttribute="top" secondItem="hE9-af-bsd" secondAttribute="top" id="WAh-Fa-1zY"/>
                             <constraint firstAttribute="bottom" secondItem="d2W-me-XZD" secondAttribute="bottom" id="YX5-Kj-kLx"/>
@@ -553,9 +559,15 @@
                     <size key="freeformSize" width="320" height="260"/>
                     <connections>
                         <outlet property="genrePickerController" destination="hM6-LY-0GJ" id="kOD-kk-sxW"/>
+                        <outlet property="releaseYearTextField" destination="bqd-KL-StJ" id="BXE-l5-yYu"/>
                     </connections>
                 </viewController>
-                <customObject id="hM6-LY-0GJ" customClass="GenrePickerController" customModule="BadFlix" customModuleProvider="target"/>
+                <customObject id="hM6-LY-0GJ" customClass="GenrePickerController" customModule="BadFlix" customModuleProvider="target">
+                    <connections>
+                        <outlet property="delegate" destination="Rlm-na-gEQ" id="7K8-WR-ozC"/>
+                        <outlet property="pickerView" destination="jYv-fb-0ag" id="oZs-bl-eFy"/>
+                    </connections>
+                </customObject>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CfO-LM-aMz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="534" y="48"/>

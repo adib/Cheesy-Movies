@@ -16,6 +16,8 @@ class GenrePickerController: NSObject,UIPickerViewDataSource,UIPickerViewDelegat
     
     @IBOutlet weak var pickerView: UIPickerView?
     
+    @IBOutlet weak var delegate : AnyObject?
+    
     func reloadData() {
         guard let genreMappings = genreList.currentMapping else {
             genreList.refresh({
@@ -45,10 +47,17 @@ class GenrePickerController: NSObject,UIPickerViewDataSource,UIPickerViewDelegat
         pickerView?.reloadAllComponents()
     }
     
+    func resetSelection(animated:Bool) {
+        guard selectionList?.count > 0 else {
+            return
+        }
+        
+        self.pickerView?.selectRow(0, inComponent: 0, animated: animated)
+    }
+    
     // MARK: - Picker View
     
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
-        self.pickerView = pickerView
         return 1
     }
     
@@ -67,4 +76,15 @@ class GenrePickerController: NSObject,UIPickerViewDataSource,UIPickerViewDelegat
 
         return items[row].0
     }
+    
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if let selectionEntry = selectionList?[row] {
+            delegate?.genrePickerController(self, didSelectGenre: selectionEntry.1)
+        }
+    }
+}
+
+
+@objc protocol GenrePickerControllerDelegate {
+    func genrePickerController(ctrl:GenrePickerController,didSelectGenre:GenreEntity?)
 }

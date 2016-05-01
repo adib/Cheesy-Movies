@@ -8,14 +8,19 @@
 
 import UIKit
 
-class SearchOptionsViewController: UIViewController {
+class SearchOptionsViewController: UIViewController,GenrePickerControllerDelegate {
 
     @IBOutlet var genrePickerController: GenrePickerController!
     
+    @IBOutlet weak var releaseYearTextField: UITextField!
+    
+    @IBOutlet weak var delegate : SearchOptionsViewControllerDelegate?
+    
+    var selectedGenre : GenreEntity?
+    var selectedReleaseYear : Int?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
@@ -23,6 +28,31 @@ class SearchOptionsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func setNeedsUpdateSearchResults() {
+        let sel = #selector(SearchOptionsViewController.updateSearchResults)
+        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: sel, object: nil)
+        self.performSelector(sel, withObject: nil, afterDelay: 0.3)
+    }
+    
+    func updateSearchResults() {
+        if let yearText = releaseYearTextField?.text,
+            intValue = Int(yearText) {
+            selectedReleaseYear = intValue
+            releaseYearTextField?.text = String(format:"%d",intValue)
+        } else {
+            releaseYearTextField?.text = nil
+            selectedReleaseYear = nil
+        }
+        
+        let searchRequest : MovieSearchRequest
+        if selectedReleaseYear == nil && selectedGenre == nil {
+            searchRequest = MovieSearchRequest()
+        } else {
+            searchRequest = MovieSearchRequest(publishYear:selectedReleaseYear, genre: selectedGenre)
+        }
+        
+        delegate?.searchOptionsViewController(self, updateMovieSearchRequest: searchRequest)
+    }
 
     /*
     // MARK: - Navigation
@@ -34,4 +64,32 @@ class SearchOptionsViewController: UIViewController {
     }
     */
 
+    // MARK: - Actions
+
+    @IBAction func resetForm(sender: AnyObject) {
+        genrePickerController?.resetSelection(true)
+        releaseYearTextField?.text = nil
+        releaseYearTextField?.resignFirstResponder()
+        selectedGenre = nil
+        selectedReleaseYear = nil
+        setNeedsUpdateSearchResults()
+    }
+    
+    @IBAction func applyForm(sender: AnyObject) {
+        releaseYearTextField?.resignFirstResponder()
+        setNeedsUpdateSearchResults()
+    }
+    
+    
+    // MARK: - GenrePickerControllerDelegate?
+    func genrePickerController(ctrl: GenrePickerController, didSelectGenre genre: GenreEntity?) {
+        selectedGenre = genre
+        setNeedsUpdateSearchResults()
+    }
+
+}
+
+
+@objc protocol SearchOptionsViewControllerDelegate  {
+    func searchOptionsViewController(ctrl : SearchOptionsViewController,updateMovieSearchRequest:MovieSearchRequest)
 }
