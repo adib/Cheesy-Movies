@@ -13,6 +13,8 @@ class MovieSearchRequest : NSObject {
     
     var requestPath  = "discover/movie"
     
+    var title : String?
+    
     var sortFunction : ((MovieEntity,MovieEntity) -> Bool)? = {
         (movie1,movie2) -> Bool in
         if let  vote1 = movie1.voteAverage,
@@ -49,15 +51,33 @@ class MovieSearchRequest : NSObject {
         params["primary_release_date.lte"] = MovieSearchRequest.dateFormatter.stringFromDate(today)
         
         requestParameters = params
+        
+        title = NSLocalizedString("Cheesy Movies", comment: "Search Title")
     }
     
     init(publishYear:Int?,genre:GenreEntity?) {
         var params = [
             "sort_by" : "popularity.asc",
-            "vote_count.gte" : 1
+            "vote_count.gte" : 15
         ]
+
+        var searchTitle = String()
         
+        if let selGenre = genre {
+            let genreID  = selGenre.genreID
+            if genreID != 0 {
+                params["with_genres"] = NSNumber(longLong:genreID)
+                searchTitle += selGenre.title ?? ""
+            }
+        } else {
+            searchTitle += NSLocalizedString("All Genres", comment: "Search Title")
+        }
+
         if let yearValue = publishYear {
+            if !searchTitle.isEmpty {
+                searchTitle += " "
+            }
+            searchTitle += String(format: "(%d)",yearValue)
             let calendar = NSCalendar.currentCalendar()
 
             let yearComponent = NSDateComponents()
@@ -83,13 +103,7 @@ class MovieSearchRequest : NSObject {
             }
         }
         
-        if let selGenre = genre {
-            let genreID  = selGenre.genreID
-            if genreID != 0 {
-                params["with_genres"] = NSNumber(longLong:genreID)
-            }
-        }
-    
+        title = searchTitle
         requestParameters = params
     }
 }

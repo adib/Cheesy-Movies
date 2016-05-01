@@ -38,15 +38,47 @@ class MovieDetailViewController: UIViewController {
         return formatter
     }()
     
+    lazy var yearFormatter = {
+        () -> NSDateFormatter in
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "yyyy"
+        return formatter
+    }()
+    
     var item : MovieEntity?
     
     func reloadData() {
-        titleLabel?.text = item?.title ?? ""
+        // TODO: add title year
+        if let title = item?.title,
+            releaseDate = item?.releaseDate {
+            // have both date and year
+
+            let releaseDateStr = String(format: " (%@)", yearFormatter.stringFromDate(releaseDate))
+            
+            let font = UIFont.preferredFontForTextStyle(UIFontTextStyleTitle1)
+            let titleAttributes = [
+                NSFontAttributeName : font,
+                NSForegroundColorAttributeName : UIColor.blackColor()
+
+            ]
+            let yearAttributes  = [
+                NSFontAttributeName : font,
+                NSForegroundColorAttributeName : UIColor.darkGrayColor()
+            ]
+            let attributedTitle = NSMutableAttributedString(string: title, attributes: titleAttributes)
+            attributedTitle.appendAttributedString(NSAttributedString(string:releaseDateStr,attributes:yearAttributes))
+            titleLabel?.attributedText = attributedTitle
+        } else {
+            titleLabel?.text = item?.title ?? ""
+        }
         
         var subtitleText = String()
-        if let  runtimeMinutes = item?.runtime,
-                intervalText = runtimeFormatter.stringFromTimeInterval(Double(runtimeMinutes) * 60){
-            subtitleText += intervalText
+        if let runtimeMinutes = item?.runtime {
+            if runtimeMinutes > 0 {
+                if let intervalText = runtimeFormatter.stringFromTimeInterval(Double(runtimeMinutes) * 60) {
+                    subtitleText += intervalText
+                }
+            }
         }
         
         if let genresArray = item?.genres {
@@ -100,9 +132,13 @@ class MovieDetailViewController: UIViewController {
             imageView.af_setImageWithURL(imageURL)
         }
         
-        if let imageView = self.backdropImageView,
-            imageURL = item.backdropURL(rescaleSize(imageView.bounds.size)) {
-            imageView.af_setImageWithURL(imageURL)
+        if let imageView = self.backdropImageView {
+            let posterImageViewSize = rescaleSize(imageView.bounds.size)
+            if let imageURL = item.backdropURL(posterImageViewSize) {
+                imageView.af_setImageWithURL(imageURL)
+            } else if let imageURL = item.posterURL(posterImageViewSize) {
+                imageView.af_setImageWithURL(imageURL)
+            }
         }
         
         if let castCtrl = castCollectionViewController {

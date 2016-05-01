@@ -34,6 +34,13 @@ class MovieListViewController: UITableViewController,SearchOptionsViewController
             }
         }
     }
+    
+    lazy var yearFormatter = {
+        () -> NSDateFormatter in
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "yyyy"
+        return formatter
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,23 +63,22 @@ class MovieListViewController: UITableViewController,SearchOptionsViewController
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         if searchResults == nil {
-            MovieEntity.search(MovieSearchRequest()) {
-                [weak self] (entities, error) in
-                guard error == nil else {
-                    print("Search error: \(error?.localizedDescription)")
-                    return
-                }
-                self?.searchResults = entities
-                self?.tableView.reloadData()
-            }
+            self.performSearch(MovieSearchRequest())
         }
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func performSearch(request : MovieSearchRequest) {
+        MovieEntity.search(request) {
+            [weak self] (entities, error) in
+            guard error == nil else {
+                print("Search error: \(error?.localizedDescription)")
+                return
+            }
+            self?.searchResults = entities
+            self?.tableView.reloadData()
+            self?.title = request.title
+        }
     }
-
     // MARK: - Actions
 
     @IBAction func toggleSearchOptions(sender: AnyObject) {
@@ -158,7 +164,13 @@ class MovieListViewController: UITableViewController,SearchOptionsViewController
         
         if let  movieCell = cell as? MovieSummaryTableViewCell,
                 movieItem = searchResults?[row]  {
-            movieCell.titleLabel.text = movieItem.title
+            
+            if let  title = movieItem.title,
+                    releaseDate = movieItem.releaseDate {
+                movieCell.titleLabel.text = String(format: "%@ (%@)",title,yearFormatter.stringFromDate(releaseDate))
+            } else {
+                movieCell.titleLabel.text = movieItem.title
+            }
 
             var requestSize = CGSizeMake(tableView.bounds.width, tableView.rowHeight)
             if let nativeScale = tableView.window?.screen.nativeScale {
@@ -170,24 +182,13 @@ class MovieListViewController: UITableViewController,SearchOptionsViewController
             
             if let backdropURL = movieItem.backdropURL(requestSize) {
                 movieCell.backdropImageView.af_setImageWithURL(backdropURL)
+            } else if let posterURL = movieItem.posterURL(requestSize) {
+                movieCell.backdropImageView.af_setImageWithURL(posterURL)
             }
         }
         return cell
     }
 
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-//            objects.removeAtIndex(indexPath.row)
-//            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
-        }
-    }
     
     // MARK: - Scroll View
 
@@ -214,15 +215,7 @@ class MovieListViewController: UITableViewController,SearchOptionsViewController
     // MARK: - SearchOptionsViewControllerDelegate
     
     func searchOptionsViewController(ctrl: SearchOptionsViewController, updateMovieSearchRequest: MovieSearchRequest) {
-        MovieEntity.search(updateMovieSearchRequest) {
-            [weak self] (entities, error) in
-            guard error == nil else {
-                print("Search error: \(error?.localizedDescription)")
-                return
-            }
-            self?.searchResults = entities
-            self?.tableView.reloadData()
-        }
+        self.performSearch(updateMovieSearchRequest)
     }
 }
 

@@ -73,7 +73,7 @@
         <!--Movie List-->
         <scene sceneID="smW-Zh-WAh">
             <objects>
-                <tableViewController title="Master" clearsSelectionOnViewWillAppear="NO" id="7bK-jq-Zjz" userLabel="Movie List" customClass="MovieListViewController" customModule="BadFlix" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController clearsSelectionOnViewWillAppear="NO" id="7bK-jq-Zjz" userLabel="Movie List" customClass="MovieListViewController" customModule="BadFlix" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="202" sectionHeaderHeight="22" sectionFooterHeight="22" id="r7i-6Z-zg0">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -144,7 +144,7 @@
                             <outlet property="delegate" destination="7bK-jq-Zjz" id="RA6-mI-bju"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Master" id="Zdf-7t-Un8">
+                    <navigationItem key="navigationItem" id="Zdf-7t-Un8">
                         <barButtonItem key="rightBarButtonItem" systemItem="search" id="1JC-EQ-JET" userLabel="Search">
                             <connections>
                                 <action selector="toggleSearchOptions:" destination="7bK-jq-Zjz" id="AdR-Pc-lGb"/>
@@ -202,7 +202,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ERJ-hJ-X8h" userLabel="Backdrop Container">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="180"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZAh-P5-dMX" userLabel="Backdrop Image">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZAh-P5-dMX" userLabel="Backdrop Image">
                                                 <rect key="frame" x="0.0" y="0.0" width="320" height="180"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="ZAh-P5-dMX" secondAttribute="height" multiplier="16:9" id="gq2-oo-yca"/>
