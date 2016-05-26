@@ -6,5 +6,7 @@ use_frameworks!
 target 'BadFlix' do
 	pod 'Alamofire', '3.3.1'
     pod 'AlamofireImage', '2.4.0'
+    pod 'Fabric'
+    pod 'Crashlytics'
 end
 
