@@ -4,7 +4,7 @@
 //
 //  Created by Sasmito Adibowo on 30/4/16.
 //  Copyright © 2016 Basil Salad Software. All rights reserved.
-//
+//  http://basilsalad.com
 
 import UIKit
 import SafariServices
