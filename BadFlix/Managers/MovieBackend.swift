@@ -14,69 +14,69 @@ private let backendConfigFileName = "BackendConfig.plist"
 private let apiKey = "900a1c8214b1686a76c5fd0f50150be0"
 
 enum ImageType {
-    case Backdrop
-    case Poster
-    case Profile
+    case backdrop
+    case poster
+    case profile
 }
 
 class MovieBackend {
     static let defaultInstance = MovieBackend()
     
     lazy var backendURL = {
-        return NSURL(string:"https://api.themoviedb.org/3/")!
+        return URL(string:"https://api.themoviedb.org/3/")!
     }()
     
-    var configuration : Dictionary<String,AnyObject>?
+    var configuration : Dictionary<String,Any>?
     
     var imageSizeMap  = Dictionary<ImageType,Array<(CGFloat,String)>>()
     
     required init() {
-        let fileManager = NSFileManager.defaultManager()
-        if let cachesDir = fileManager.URLsForDirectory(.CachesDirectory, inDomains: .UserDomainMask).first,
-            filePathString = cachesDir.URLByAppendingPathComponent(backendConfigFileName).path {
-            if let dict = NSKeyedUnarchiver.unarchiveObjectWithFile(filePathString) as? Dictionary<String,AnyObject> {
-                self.imageSizeMap.removeAll(keepCapacity:true)
+        let fileManager = FileManager.default
+        if let cachesDir = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first {
+            let filePathString = cachesDir.appendingPathComponent(backendConfigFileName).path
+            if let dict = NSKeyedUnarchiver.unarchiveObject(withFile: filePathString) as? Dictionary<String,AnyObject> {
+                self.imageSizeMap.removeAll(keepingCapacity:true)
                 self.configuration = dict
             }
         }
     }
     
     
-    func refresh(completionHandler: ((NSError?) -> Void)? ) {
-        self.requestJSON("configuration") {
-            (jsonObject : AnyObject?, error : NSError?) in
+    func refresh(_ completionHandler: ((Error?) -> Void)? ) {
+        self.requestJSON(path:"configuration") {
+            (jsonObject : Any?, error : Error?) in
             defer {
                 completionHandler?(error)
             }
-            if let jsonDict = jsonObject as? Dictionary<String,AnyObject> {
+            if let jsonDict = jsonObject as? Dictionary<String,Any> {
                 self.configuration = jsonDict
                 self.saveConfiguration()
             }
         }
     }
 
-    func requestJSON(path: String,completionHandler: (AnyObject?,NSError?) -> Void) {
-        requestJSON(path,parameters:nil,completionHandler: completionHandler)
+    func requestJSON(path: String,completionHandler: @escaping (Any?,Error?) -> Void) {
+        requestJSON(path:path,parameters:nil,completionHandler: completionHandler)
     }
 
-    func requestJSON(path: String,parameters:[String:AnyObject]?,completionHandler: (AnyObject?,NSError?) -> Void) {
-        let requestURL = backendURL.URLByAppendingPathComponent(path)
-        requestJSON(requestURL, parameters:parameters,completionHandler: completionHandler)
+    func requestJSON(path: String,parameters:[String:Any]?,completionHandler: @escaping (Any?,Error?) -> Void) {
+        let requestURL = backendURL.appendingPathComponent(path)
+        requestJSON(url:requestURL, parameters:parameters,completionHandler: completionHandler)
     }
     
-    func requestJSON(URL: NSURL,parameters : [String:AnyObject]? ,completionHandler: (AnyObject?,NSError?) -> Void) {
-        var requestParams = parameters ?? Dictionary<String,AnyObject>()
+    func requestJSON(url: Foundation.URL,parameters : [String:Any]? ,completionHandler: @escaping (Any?,Error?) -> Void) {
+        var requestParams = parameters ?? Dictionary<String,Any>()
         requestParams["api_key"] = apiKey
-        Alamofire.request(.GET, URL,parameters: requestParams).responseJSON {
-            ( response : Response<AnyObject,NSError>) in
+        Alamofire.request(url, method: .get, parameters: requestParams).responseJSON {
+            response in
             completionHandler(response.result.value,response.result.error)
         }
     }
     
-    func getImageURL(path:String,type:ImageType,size: CGSize) -> NSURL? {
+    func getImageURL(_ path:String,type:ImageType,size: CGSize) -> URL? {
         guard let   currentConfig = self.configuration,
-                    imageConfig = currentConfig["images"] as? [String:AnyObject],
-                    imageBaseString = imageConfig["secure_base_url"] as? String else {
+                    let imageConfig = currentConfig["images"] as? [String:AnyObject],
+                    let imageBaseString = imageConfig["secure_base_url"] as? String else {
             return nil
         }
         
@@ -84,11 +84,11 @@ class MovieBackend {
         if sizesArrayOpt == nil {
             let sizesKey : String
             switch type {
-            case .Backdrop:
+            case .backdrop:
                 sizesKey = "backdrop_sizes"
-            case .Poster:
+            case .poster:
                 sizesKey = "poster_sizes"
-            case .Profile:
+            case .profile:
                 sizesKey = "profile_sizes"
             }
             if let  sizesList = imageConfig[sizesKey] as? [String] {
@@ -98,7 +98,7 @@ class MovieBackend {
                     sizesArrayOpt?.reserveCapacity(sizesList.count)
                     for entry in sizesList {
                         if entry.hasPrefix("w") {
-                            if let floatValue = Float(entry.substringFromIndex(entry.startIndex.successor())) {
+                            if let floatValue = Float(entry.substring(from: entry.characters.index(after: entry.startIndex))) {
                                 sizesArrayOpt?.append((CGFloat(floatValue),entry))
                             }
                         }
@@ -122,7 +122,7 @@ class MovieBackend {
         
         let urlString = "\(imageBaseString)\(sizePath)\(path)"
         
-        return NSURL(string: urlString)
+        return URL(string: urlString)
     }
 
     
@@ -131,19 +131,19 @@ class MovieBackend {
             return
         }
         
-        let processInfo = NSProcessInfo.processInfo()
-        let activityToken = processInfo.beginActivityWithOptions([.Background], reason: "Saving backend configuration")
+        let processInfo = ProcessInfo.processInfo
+        let activityToken = processInfo.beginActivity(options: [.background], reason: "Saving backend configuration")
         
-        dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0)) {
+        DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async {
             defer {
                 processInfo.endActivity(activityToken)
             }
 
-            let fileManager = NSFileManager.defaultManager()
-            guard let cachesDir = fileManager.URLsForDirectory(.CachesDirectory, inDomains: .UserDomainMask).first,
-                pathString = cachesDir.URLByAppendingPathComponent(backendConfigFileName).path else {
+            let fileManager = FileManager.default
+            guard let cachesDir = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first else {
                     return
             }
+            let pathString = cachesDir.appendingPathComponent(backendConfigFileName).path 
             NSKeyedArchiver.archiveRootObject(currentConfig, toFile: pathString)
         }
     }

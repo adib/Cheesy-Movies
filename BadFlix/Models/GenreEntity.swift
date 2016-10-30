@@ -15,26 +15,26 @@ class GenreEntity : NSObject,NSCoding {
     
     required init?(coder aDecoder: NSCoder) {
         super.init()
-        title = aDecoder.decodeObjectForKey("title") as? String
-        genreID = aDecoder.decodeInt64ForKey("genreID")
+        title = aDecoder.decodeObject(forKey: "title") as? String
+        genreID = aDecoder.decodeInt64(forKey: "genreID")
     }
     
     init(json:[String:AnyObject]) {
         if let number = json["id"] as? NSNumber {
-            genreID = number.longLongValue
+            genreID = number.int64Value
         }
         title = json["name"] as? String
     }
     
-    func encodeWithCoder(aCoder: NSCoder) {
+    func encode(with aCoder: NSCoder) {
         if let v = title {
-            aCoder.encodeObject(v, forKey: "title")
+            aCoder.encode(v, forKey: "title")
         }
-        aCoder.encodeInt64(genreID, forKey: "genreID")
+        aCoder.encode(genreID, forKey: "genreID")
     }
     
     
-    override func isEqual(object: AnyObject?) -> Bool {
+    override func isEqual(_ object: Any?) -> Bool {
         guard let otherGenre = object as? GenreEntity else {
             return false
         }
@@ -47,7 +47,7 @@ class GenreEntity : NSObject,NSCoding {
         }
     }
     
-    static func parse(json:[[String:AnyObject]]) -> [GenreEntity] {
+    static func parse(_ json:[[String:AnyObject]]) -> [GenreEntity] {
         var resultArray = Array<GenreEntity>()
         resultArray.reserveCapacity(json.count)
         for genreDict in json {

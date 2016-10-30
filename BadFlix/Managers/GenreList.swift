@@ -18,9 +18,9 @@ class GenreList {
     
     
     
-    func refresh(completionHandler: ((NSError?) -> Void)? ) {
+    func refresh(_ completionHandler: ((Error?) -> Void)? ) {
         // TODO: refresh list of genres
-        MovieBackend.defaultInstance.requestJSON("genre/movie/list") {
+        MovieBackend.defaultInstance.requestJSON(path: "genre/movie/list") {
             (result, error) in
             guard error == nil else {
                 completionHandler?(error)
@@ -48,13 +48,13 @@ class GenreList {
     }
     
     required init() {
-        let fileManager = NSFileManager.defaultManager()
-        if let cachesDir = fileManager.URLsForDirectory(.CachesDirectory, inDomains: .UserDomainMask).first,
-            genrePathString = cachesDir.URLByAppendingPathComponent(genreListFileName).path {
-            if let dict = NSKeyedUnarchiver.unarchiveObjectWithFile(genrePathString) as? Dictionary<NSNumber,GenreEntity> {
+        let fileManager = FileManager.default
+        if let cachesDir = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first {
+            let genrePathString = cachesDir.appendingPathComponent(genreListFileName).path
+            if let dict = NSKeyedUnarchiver.unarchiveObject(withFile: genrePathString) as? Dictionary<NSNumber,GenreEntity> {
                 var ourDict = Dictionary<Int64,GenreEntity>()
                 for (k,v) in dict {
-                    ourDict[k.longLongValue] = v
+                    ourDict[k.int64Value] = v
                 }
                 self.currentMapping = ourDict
             }
@@ -67,22 +67,22 @@ class GenreList {
             return
         }
         
-        let processInfo = NSProcessInfo.processInfo()
-        let activityToken = processInfo.beginActivityWithOptions([.Background], reason: "Saving genre information")
+        let processInfo = ProcessInfo.processInfo
+        let activityToken = processInfo.beginActivity(options: [.background], reason: "Saving genre information")
 
-        dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0)) {
+        DispatchQueue.global(qos: DispatchQoS.QoSClass.background).async {
             defer {
                 processInfo.endActivity(activityToken)
             }
-            let fileManager = NSFileManager.defaultManager()
-            guard let cachesDir = fileManager.URLsForDirectory(.CachesDirectory, inDomains: .UserDomainMask).first,
-                    genrePathString = cachesDir.URLByAppendingPathComponent(genreListFileName).path else {
+            let fileManager = FileManager.default
+            guard let cachesDir = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first else {
                 return
             }
+            let genrePathString = cachesDir.appendingPathComponent(genreListFileName).path
 
             let serializedDict = NSMutableDictionary(capacity: mapping.count)
             for (k,v) in mapping {
-                serializedDict.setObject(v, forKey: NSNumber(longLong: k))
+                serializedDict.setObject(v, forKey: NSNumber(value: k as Int64))
             }
             NSKeyedArchiver.archiveRootObject(serializedDict, toFile: genrePathString)
         }

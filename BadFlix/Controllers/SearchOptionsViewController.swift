@@ -30,13 +30,13 @@ class SearchOptionsViewController: UIViewController,GenrePickerControllerDelegat
     
     func setNeedsUpdateSearchResults() {
         let sel = #selector(SearchOptionsViewController.updateSearchResults)
-        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: sel, object: nil)
-        self.performSelector(sel, withObject: nil, afterDelay: 0.3)
+        NSObject.cancelPreviousPerformRequests(withTarget: self, selector: sel, object: nil)
+        self.perform(sel, with: nil, afterDelay: 0.3)
     }
     
     func updateSearchResults() {
         if let yearText = releaseYearTextField?.text,
-            intValue = Int(yearText) {
+            let intValue = Int(yearText) {
             selectedReleaseYear = intValue
             releaseYearTextField?.text = String(format:"%d",intValue)
         } else {
@@ -66,7 +66,7 @@ class SearchOptionsViewController: UIViewController,GenrePickerControllerDelegat
 
     // MARK: - Actions
 
-    @IBAction func resetForm(sender: AnyObject) {
+    @IBAction func resetForm(_ sender: AnyObject) {
         genrePickerController?.resetSelection(true)
         releaseYearTextField?.text = nil
         releaseYearTextField?.resignFirstResponder()
@@ -75,7 +75,7 @@ class SearchOptionsViewController: UIViewController,GenrePickerControllerDelegat
         setNeedsUpdateSearchResults()
     }
     
-    @IBAction func applyForm(sender: AnyObject) {
+    @IBAction func applyForm(_ sender: AnyObject) {
         releaseYearTextField?.resignFirstResponder()
         setNeedsUpdateSearchResults()
     }
@@ -83,14 +83,14 @@ class SearchOptionsViewController: UIViewController,GenrePickerControllerDelegat
 
     // MARK: - UITextFieldDelegate
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         setNeedsUpdateSearchResults()
         return true
     }
     
     // MARK: - GenrePickerControllerDelegate
-    func genrePickerController(ctrl: GenrePickerController, didSelectGenre genre: GenreEntity?) {
+    func genrePickerController(_ ctrl: GenrePickerController, didSelectGenre genre: GenreEntity?) {
         selectedGenre = genre
         setNeedsUpdateSearchResults()
     }
@@ -99,5 +99,5 @@ class SearchOptionsViewController: UIViewController,GenrePickerControllerDelegat
 
 
 @objc protocol SearchOptionsViewControllerDelegate  {
-    func searchOptionsViewController(ctrl : SearchOptionsViewController,updateMovieSearchRequest:MovieSearchRequest)
+    func searchOptionsViewController(_ ctrl : SearchOptionsViewController,updateMovieSearchRequest:MovieSearchRequest)
 }

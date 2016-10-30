@@ -17,23 +17,23 @@ class CastEntity {
     
     init(json: [String:AnyObject]) {
         if let number = json["id"] as? NSNumber {
-            castID = number.longLongValue
+            castID = number.int64Value
         }
         characterName = json["character"] as? String
         performerName = json["name"] as? String
         profilePath = json ["profile_path"] as? String
     }
     
-    func profileURL(size: CGSize) -> NSURL? {
+    func profileURL(_ size: CGSize) -> URL? {
         guard let path = profilePath else {
             return nil
         }
         
-        return MovieBackend.defaultInstance.getImageURL(path, type: .Profile, size: size)
+        return MovieBackend.defaultInstance.getImageURL(path, type: .profile, size: size)
     }
 
     
-    static func parse(json:[[String:AnyObject]]) -> [CastEntity] {
+    static func parse(_ json:[[String:AnyObject]]) -> [CastEntity] {
         var resultArray = Array<CastEntity>()
         resultArray.reserveCapacity(json.count)
         for dict in json {

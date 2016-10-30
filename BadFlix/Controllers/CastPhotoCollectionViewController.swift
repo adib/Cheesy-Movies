@@ -39,8 +39,8 @@ class CastPhotoCollectionViewController: UICollectionViewController {
     
     func setNeedsReloadImages() {
         let sel = #selector(CastPhotoCollectionViewController.reloadImages)
-        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: sel, object: nil)
-        self.performSelector(sel, withObject: nil, afterDelay: 0)
+        NSObject.cancelPreviousPerformRequests(withTarget: self, selector: sel, object: nil)
+        self.perform(sel, with: nil, afterDelay: 0)
     }
     
     func reloadImages() {
@@ -48,8 +48,8 @@ class CastPhotoCollectionViewController: UICollectionViewController {
             return
         }
         
-        let visibleIndexes = collectionView.indexPathsForVisibleItems()
-        collectionView.reloadItemsAtIndexPaths(visibleIndexes)
+        let visibleIndexes = collectionView.indexPathsForVisibleItems
+        collectionView.reloadItems(at: visibleIndexes)
     }
     
     /*
@@ -59,24 +59,24 @@ class CastPhotoCollectionViewController: UICollectionViewController {
 
     // MARK: UICollectionViewDataSource
 
-    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
 
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let item = self.item else {
             return 0
         }
         return item.count
     }
 
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath)
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
     
         if let actorCell = cell as? ActorPhotoCollectionViewCell,
-                castItem = item?[indexPath.row] {
+                let castItem = item?[indexPath.row] {
             actorCell.actorNameLabel?.text = castItem.performerName
             actorCell.characterNameLabel?.text = castItem.characterName
             
@@ -84,12 +84,12 @@ class CastPhotoCollectionViewController: UICollectionViewController {
             let rescaleSize = {
                 (size: CGSize)-> CGSize in
                 if nativeScale > 1 {
-                    return CGSizeMake(size.width * nativeScale, size.height * nativeScale)
+                    return CGSize(width: size.width * nativeScale, height: size.height * nativeScale)
                 }
                 return size
             }
 
-            var itemSize = CGSizeMake(200,200)
+            var itemSize = CGSize(width: 200,height: 200)
             // at this point of time, the collectionView item may not have laid out its subviews, hence we can't ask for the image view's size
             // the next best thing would be to use the layout's item size
             if let flowLayout = self.collectionViewLayout as? UICollectionViewFlowLayout {
@@ -97,7 +97,7 @@ class CastPhotoCollectionViewController: UICollectionViewController {
             }
             
             if let imageURL = castItem.profileURL(itemSize) {
-                actorCell.profileImageView?.af_setImageWithURL(imageURL)
+                actorCell.profileImageView?.af_setImage(withURL:imageURL)
             }
         }
         // Configure the cell

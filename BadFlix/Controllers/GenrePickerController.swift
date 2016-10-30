@@ -7,6 +7,30 @@
 //  http://basilsalad.com
 
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class GenrePickerController: NSObject,UIPickerViewDataSource,UIPickerViewDelegate {
 
@@ -38,16 +62,16 @@ class GenrePickerController: NSObject,UIPickerViewDataSource,UIPickerViewDelegat
                 updatingSelectionList.append((title,genre))
             }
         }
-        updatingSelectionList.sortInPlace( {
+        updatingSelectionList.sort( by: {
             $0.0 > $1.0
         })
-        updatingSelectionList.insert((NSLocalizedString("All Genres", comment: "Genre Entry"),nil), atIndex: 0)
+        updatingSelectionList.insert((NSLocalizedString("All Genres", comment: "Genre Entry"),nil), at: 0)
         self.selectionList = updatingSelectionList
         
         pickerView?.reloadAllComponents()
     }
     
-    func resetSelection(animated:Bool) {
+    func resetSelection(_ animated:Bool) {
         guard selectionList?.count > 0 else {
             return
         }
@@ -57,11 +81,11 @@ class GenrePickerController: NSObject,UIPickerViewDataSource,UIPickerViewDelegat
     
     // MARK: - Picker View
     
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         guard let items = selectionList else {
             self.reloadData()
             return 0
@@ -69,7 +93,7 @@ class GenrePickerController: NSObject,UIPickerViewDataSource,UIPickerViewDelegat
         return items.count
     }
     
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         guard let items = selectionList else {
             return ""
         }
@@ -77,7 +101,7 @@ class GenrePickerController: NSObject,UIPickerViewDataSource,UIPickerViewDelegat
         return items[row].0
     }
     
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if let selectionEntry = selectionList?[row] {
             delegate?.genrePickerController(self, didSelectGenre: selectionEntry.1)
         }
@@ -86,5 +110,5 @@ class GenrePickerController: NSObject,UIPickerViewDataSource,UIPickerViewDelegat
 
 
 @objc protocol GenrePickerControllerDelegate {
-    func genrePickerController(ctrl:GenrePickerController,didSelectGenre:GenreEntity?)
+    func genrePickerController(_ ctrl:GenrePickerController,didSelectGenre:GenreEntity?)
 }

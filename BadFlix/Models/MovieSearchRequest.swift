@@ -18,39 +18,39 @@ class MovieSearchRequest : NSObject {
     var sortFunction : ((MovieEntity,MovieEntity) -> Bool)? = {
         (movie1,movie2) -> Bool in
         if let  vote1 = movie1.voteAverage,
-            vote2 = movie2.voteAverage {
+            let vote2 = movie2.voteAverage {
             return vote1 < vote2
         }
         return movie1.movieID ?? 0 < movie2.movieID ?? 0
     }
     
     static let dateFormatter = {
-        () -> NSDateFormatter in
-        let df = NSDateFormatter()
+        () -> DateFormatter in
+        let df = DateFormatter()
         df.dateFormat = "yyyy-MM-dd"
         // use ISO calendar since we're using this formatter for making Backend API calls
-        df.calendar = NSCalendar(identifier: NSCalendarIdentifierISO8601)
+        df.calendar = Calendar(identifier: Calendar.Identifier.iso8601)
         return df
     }()
     
     override init() {
         super.init()
 
-        let calendar = NSCalendar.currentCalendar()
-        let now = NSDate()
-        let today = calendar.startOfDayForDate(now)
-        let beforeDate = calendar.dateByAddingUnit(.Month, value: -6, toDate: now, options: [.SearchBackwards,.MatchFirst])
+        let calendar = Calendar.current
+        let now = Date()
+        let today = calendar.startOfDay(for: now)
+        let beforeDate = (calendar as NSCalendar).date(byAdding: .month, value: -6, to: now, options: [.searchBackwards,.matchFirst])
         var params = [
             "sort_by" : "popularity.asc",
             "vote_count.gte" : 150
-        ]
+        ] as [String : Any]
         
         if let date = beforeDate {
-            params["primary_release_date.gte"] = MovieSearchRequest.dateFormatter.stringFromDate(date)
+            params["primary_release_date.gte"] = MovieSearchRequest.dateFormatter.string(from: date)
         }
-        params["primary_release_date.lte"] = MovieSearchRequest.dateFormatter.stringFromDate(today)
+        params["primary_release_date.lte"] = MovieSearchRequest.dateFormatter.string(from: today)
         
-        requestParameters = params
+        requestParameters = params as [String : AnyObject]?
         
         title = NSLocalizedString("Cheesy Movies", comment: "Search Title")
     }
@@ -59,14 +59,14 @@ class MovieSearchRequest : NSObject {
         var params = [
             "sort_by" : "popularity.asc",
             "vote_count.gte" : 15
-        ]
+        ] as [String : Any]
 
         var searchTitle = String()
         
         if let selGenre = genre {
             let genreID  = selGenre.genreID
             if genreID != 0 {
-                params["with_genres"] = NSNumber(longLong:genreID)
+                params["with_genres"] = NSNumber(value: genreID as Int64)
                 searchTitle += selGenre.title ?? ""
             }
         } else {
@@ -78,24 +78,24 @@ class MovieSearchRequest : NSObject {
                 searchTitle += " "
             }
             searchTitle += String(format: "(%d)",yearValue)
-            let calendar = NSCalendar.currentCalendar()
+            let calendar = Calendar.current
 
-            let yearComponent = NSDateComponents()
+            var yearComponent = DateComponents()
             yearComponent.year = yearValue
             
-            if let dateSelection = calendar.dateFromComponents(yearComponent) {
+            if let dateSelection = calendar.date(from: yearComponent) {
                 var yearStartDateOpt : NSDate? = nil
-                if  calendar.rangeOfUnit(.Year, startDate: &yearStartDateOpt, interval: nil, forDate: dateSelection),
+                if  (calendar as NSCalendar).range(of: .year, start: &yearStartDateOpt, interval: nil, for: dateSelection),
                     let yearStartDate = yearStartDateOpt {
-                    let yearStartDateStr = MovieSearchRequest.dateFormatter.stringFromDate(yearStartDate)
+                    let yearStartDateStr = MovieSearchRequest.dateFormatter.string(from: yearStartDate as Date)
                     params["primary_release_date.gte"] = yearStartDateStr
                     
-                    if let nextYearDate = calendar.dateByAddingUnit(.Year, value: 1, toDate: yearStartDate, options: [.MatchFirst]) {
+                    if let nextYearDate = (calendar as NSCalendar).date(byAdding: .year, value: 1, to: yearStartDate as Date, options: [.matchFirst]) {
                         var nextYearStartDateOpt : NSDate? = nil
-                        if calendar.rangeOfUnit(.Year, startDate: &nextYearStartDateOpt, interval:nil,forDate:nextYearDate),
+                        if (calendar as NSCalendar).range(of: .year, start: &nextYearStartDateOpt, interval:nil,for:nextYearDate),
                             let nextYearStartDate = nextYearStartDateOpt,
-                                thisYearEndDate = calendar.dateByAddingUnit(.Day, value: -1, toDate: nextYearStartDate, options: [.MatchFirst,.SearchBackwards]) {
-                            let thisYearEndDateStr = MovieSearchRequest.dateFormatter.stringFromDate(thisYearEndDate)
+                                let thisYearEndDate = (calendar as NSCalendar).date(byAdding: .day, value: -1, to: nextYearStartDate as Date, options: [.matchFirst,.searchBackwards]) {
+                            let thisYearEndDateStr = MovieSearchRequest.dateFormatter.string(from: thisYearEndDate)
                             params["primary_release_date.lte"] = thisYearEndDateStr
                         }
                     }
@@ -104,6 +104,6 @@ class MovieSearchRequest : NSObject {
         }
         
         title = searchTitle
-        requestParameters = params
+        requestParameters = params as [String : AnyObject]?
     }
 }

@@ -13,7 +13,7 @@ class MovieEntity {
     var movieID : Int64?
     var title: String?
     var overview: String?
-    var releaseDate: NSDate?
+    var releaseDate: Date?
     var popularity : Float32?
     var voteAverage : Float32?
     
@@ -33,14 +33,14 @@ class MovieEntity {
         self.update(json)
     }
     
-    func update(json:[String:AnyObject]) {
+    func update(_ json:[String:AnyObject]) {
         if let number = json["id"] as? NSNumber {
-            movieID = number.longLongValue
+            movieID = number.int64Value
         }
         title = json["original_title"] as? String
         overview = json["overview"] as? String
         if let dateStr = json["release_date"] as? String {
-            releaseDate = MovieSearchRequest.dateFormatter.dateFromString(dateStr)
+            releaseDate = MovieSearchRequest.dateFormatter.date(from: dateStr)
         }
         
         if let number = json["popularity"] as? NSNumber {
@@ -51,7 +51,7 @@ class MovieEntity {
         }
         
         if let companies = json["production_companies"] as? [[String:AnyObject]],
-                firstCompany = companies.first  {
+                let firstCompany = companies.first  {
             productionCompany = firstCompany["name"] as? String
         }
         
@@ -67,7 +67,7 @@ class MovieEntity {
         }
 
         if let  creditsDict = json["credits"] as? [String:AnyObject],
-                castArray = creditsDict["cast"] as? [[String:AnyObject]] {
+                let castArray = creditsDict["cast"] as? [[String:AnyObject]] {
             casts = CastEntity.parse(castArray)
         }
         
@@ -80,8 +80,8 @@ class MovieEntity {
         homepageURLString = homepage
         
         if let  videosDict = json["videos"] as? [String:AnyObject],
-                videoResults = videosDict["results"] as? [[String:AnyObject]],
-                firstVideo = videoResults.first {
+                let videoResults = videosDict["results"] as? [[String:AnyObject]],
+                let firstVideo = videoResults.first {
             if firstVideo["site"] as? String == "YouTube" {
                 if let youtubeID = firstVideo["key"] {
                     trailerURLString = "https://www.youtube.com/embed/\(youtubeID)"
@@ -90,23 +90,23 @@ class MovieEntity {
         }
     }
     
-    func posterURL(size: CGSize) -> NSURL? {
+    func posterURL(_ size: CGSize) -> URL? {
         guard let path = posterPath else {
             return nil
         }
         
-        return MovieBackend.defaultInstance.getImageURL(path, type: .Poster, size: size)
+        return MovieBackend.defaultInstance.getImageURL(path, type: .poster, size: size)
     }
     
-    func backdropURL(size:CGSize) -> NSURL? {
+    func backdropURL(_ size:CGSize) -> URL? {
         guard let path = backdropPath else {
             return nil
         }
         
-        return MovieBackend.defaultInstance.getImageURL(path, type: .Backdrop, size: size)
+        return MovieBackend.defaultInstance.getImageURL(path, type: .backdrop, size: size)
     }
     
-    func refresh(completionHandler: ((NSError?) -> Void)? ) {
+    func refresh(_ completionHandler: ((Error?) -> Void)? ) {
         guard let movieID = self.movieID else {
             // TODO: report error of missing ID
             completionHandler?(nil)
@@ -115,7 +115,7 @@ class MovieEntity {
         let params = [
             "append_to_response" : "videos,credits"
         ]
-        MovieBackend.defaultInstance.requestJSON("movie/\(movieID)",parameters: params, completionHandler:  {
+        MovieBackend.defaultInstance.requestJSON(path:"movie/\(movieID)",parameters: params, completionHandler:  {
             (jsonObject,error) in
             guard error == nil, let resultDict = jsonObject as? [String:AnyObject] else {
                 completionHandler?(error)
@@ -127,7 +127,7 @@ class MovieEntity {
         })
     }
     
-    static func parse(json:[[String:AnyObject]]) -> [MovieEntity] {
+    static func parse(_ json:[[String:AnyObject]]) -> [MovieEntity] {
         var resultArray = Array<MovieEntity>()
         resultArray.reserveCapacity(json.count)
         for dict in json {
@@ -139,22 +139,22 @@ class MovieEntity {
         return resultArray
     }
 
-    static func search(request:MovieSearchRequest,completionHandler: ([MovieEntity]?,NSError?) -> Void) {
+    static func search(_ request:MovieSearchRequest,completionHandler: @escaping ([MovieEntity]?,Error?) -> Void) {
         let backend = MovieBackend.defaultInstance
-        backend.requestJSON(request.requestPath, parameters: request.requestParameters) {
+        backend.requestJSON(path:request.requestPath, parameters: request.requestParameters) {
             (resultObject, resultError) in
             guard resultError == nil else {
                 completionHandler(nil,resultError)
                 return
             }
             if let  resultDict = resultObject as? [String:AnyObject],
-                    resultEntries = resultDict["results"] as? [[String:AnyObject]] {
-                dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0), { 
+                    let resultEntries = resultDict["results"] as? [[String:AnyObject]] {
+                DispatchQueue.global(qos: DispatchQoS.QoSClass.userInteractive).async(execute: { 
                     var moviesArray = MovieEntity.parse(resultEntries)
                     if let sortFunction = request.sortFunction {
-                        moviesArray.sortInPlace(sortFunction)
+                        moviesArray.sort(by: sortFunction)
                     }
-                    dispatch_async(dispatch_get_main_queue(), {
+                    DispatchQueue.main.async(execute: {
                         completionHandler(moviesArray,nil)
                     })
                 })

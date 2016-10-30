@@ -9,9 +9,9 @@
 import UIKit
 import AlamofireImage
 
-private let searchOptionsAnimationDuration : NSTimeInterval = 0.2
-private let searchOptionsAnimationDelay  : NSTimeInterval = 0
-private let searchOptionsAnimationOptions : UIViewAnimationOptions =  [.BeginFromCurrentState, .CurveEaseOut]
+private let searchOptionsAnimationDuration : TimeInterval = 0.2
+private let searchOptionsAnimationDelay  : TimeInterval = 0
+private let searchOptionsAnimationOptions : UIViewAnimationOptions =  [.beginFromCurrentState, .curveEaseOut]
 
 
 class MovieListViewController: UITableViewController,SearchOptionsViewControllerDelegate {
@@ -25,8 +25,8 @@ class MovieListViewController: UITableViewController,SearchOptionsViewController
     var searchResults : [MovieEntity]?
     
     lazy var yearFormatter = {
-        () -> NSDateFormatter in
-        let formatter = NSDateFormatter()
+        () -> DateFormatter in
+        let formatter = DateFormatter()
         formatter.dateFormat = "yyyy"
         return formatter
     }()
@@ -41,22 +41,22 @@ class MovieListViewController: UITableViewController,SearchOptionsViewController
             "searchOptionsView" : searchOptionsView
         ]
         tableView.addSubview(searchOptionsView)
-        tableView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[searchOptionsView]|", options: [], metrics: nil, views: viewBindings))
-        tableView.addConstraint(NSLayoutConstraint(item: searchOptionsView, attribute: .Bottom, relatedBy: .Equal, toItem: tableView, attribute: .Top, multiplier: 1, constant: 0))
-        tableView.addConstraint(NSLayoutConstraint(item: searchOptionsView, attribute: .Width, relatedBy: .Equal, toItem: tableView, attribute: .Width, multiplier: 1, constant: 0))
-        tableView.addConstraint(NSLayoutConstraint(item: searchOptionsView, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .Width, multiplier: 1, constant: 216+44))
+        tableView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[searchOptionsView]|", options: [], metrics: nil, views: viewBindings))
+        tableView.addConstraint(NSLayoutConstraint(item: searchOptionsView, attribute: .bottom, relatedBy: .equal, toItem: tableView, attribute: .top, multiplier: 1, constant: 0))
+        tableView.addConstraint(NSLayoutConstraint(item: searchOptionsView, attribute: .width, relatedBy: .equal, toItem: tableView, attribute: .width, multiplier: 1, constant: 0))
+        tableView.addConstraint(NSLayoutConstraint(item: searchOptionsView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: 216+44))
         
 
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if searchResults == nil {
             self.performSearch(MovieSearchRequest())
         }
     }
 
-    func performSearch(request : MovieSearchRequest) {
+    func performSearch(_ request : MovieSearchRequest) {
         MovieEntity.search(request) {
             [weak self] (entities, error) in
             guard error == nil else {
@@ -70,7 +70,7 @@ class MovieListViewController: UITableViewController,SearchOptionsViewController
     }
     // MARK: - Actions
 
-    @IBAction func toggleSearchOptions(sender: AnyObject) {
+    @IBAction func toggleSearchOptions(_ sender: AnyObject) {
         let showingSearch = showingSearchOptions
         if showingSearch {
             // hide search options
@@ -82,16 +82,16 @@ class MovieListViewController: UITableViewController,SearchOptionsViewController
         
         if !showingSearch {
             // toggle to show search
-            UIView.animateWithDuration(searchOptionsAnimationDuration, delay:searchOptionsAnimationDelay, options:searchOptionsAnimationOptions,  animations: {
+            UIView.animate(withDuration: searchOptionsAnimationDuration, delay:searchOptionsAnimationDelay, options:searchOptionsAnimationOptions,  animations: {
                 scrollView.contentInset = UIEdgeInsetsMake(headerFrame.size.height + topOffset, 0, 0, 0)
                 }, completion: {
                     (completed: Bool) in
-                    self.tableView.setContentOffset(CGPointMake(0, -(headerFrame.size.height + topOffset)), animated: true)
+                    self.tableView.setContentOffset(CGPoint(x: 0, y: -(headerFrame.size.height + topOffset)), animated: true)
                     self.showingSearchOptions = true
             })
         } else {
             // toggle to hide search
-            UIView.animateWithDuration(searchOptionsAnimationDuration, delay:searchOptionsAnimationDelay, options:searchOptionsAnimationOptions, animations: {
+            UIView.animate(withDuration: searchOptionsAnimationDuration, delay:searchOptionsAnimationDelay, options:searchOptionsAnimationOptions, animations: {
                 scrollView.contentInset = UIEdgeInsetsMake(topOffset, 0, 0, 0)
                 }, completion: {
                     (completed: Bool) in
@@ -102,12 +102,12 @@ class MovieListViewController: UITableViewController,SearchOptionsViewController
     }
     // MARK: - Segues
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         defer {
             // fixup back button
-            if let  navController = segue.destinationViewController as? UINavigationController,
-                    topViewController = navController.topViewController,
-                    displayModeButtonItem = self.splitViewController?.displayModeButtonItem() {
+            if let  navController = segue.destination as? UINavigationController,
+                    let topViewController = navController.topViewController,
+                    let displayModeButtonItem = self.splitViewController?.displayModeButtonItem {
                 let navItem  = topViewController.navigationItem
                 navItem.leftBarButtonItem = displayModeButtonItem
                 navItem.leftItemsSupplementBackButton = true
@@ -116,13 +116,13 @@ class MovieListViewController: UITableViewController,SearchOptionsViewController
         let segueIdentifier = segue.identifier
         if segueIdentifier == "showMovie" {
             if let  indexPath = self.tableView.indexPathForSelectedRow,
-                    selectedItem = searchResults?[indexPath.row],
-                    navController = segue.destinationViewController as? UINavigationController,
-                    detailController = navController.topViewController as? MovieDetailViewController {
+                    let selectedItem = searchResults?[indexPath.row],
+                    let navController = segue.destination as? UINavigationController,
+                    let detailController = navController.topViewController as? MovieDetailViewController {
                 detailController.item = selectedItem
             }
         } else if segueIdentifier == "embedSearchOptions" {
-            if let searchCtrl = segue.destinationViewController as? SearchOptionsViewController {
+            if let searchCtrl = segue.destination as? SearchOptionsViewController {
                 searchCtrl.delegate = self
                 self.searchOptionsController = searchCtrl
             }
@@ -131,37 +131,37 @@ class MovieListViewController: UITableViewController,SearchOptionsViewController
 
     // MARK: - Table View
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let items = searchResults {
             return items.count
         }
         return 0
     }
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let tableViewBounds = tableView.bounds
         return round(max(tableViewBounds.size.width / 1.78, 44) / 2) * 2 + 1
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("MovieSummaryCell", forIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "MovieSummaryCell", for: indexPath)
         let row = indexPath.row
         
         if let  movieCell = cell as? MovieSummaryTableViewCell,
-                movieItem = searchResults?[row]  {
+                let movieItem = searchResults?[row]  {
             
             if let  title = movieItem.title,
-                    releaseDate = movieItem.releaseDate {
-                movieCell.titleLabel.text = String(format: "%@ (%@)",title,yearFormatter.stringFromDate(releaseDate))
+                    let releaseDate = movieItem.releaseDate {
+                movieCell.titleLabel.text = String(format: "%@ (%@)",title,yearFormatter.string(from: releaseDate as Date))
             } else {
                 movieCell.titleLabel.text = movieItem.title
             }
 
-            var requestSize = CGSizeMake(tableView.bounds.width, tableView.rowHeight)
+            var requestSize = CGSize(width: tableView.bounds.width, height: tableView.rowHeight)
             if let nativeScale = tableView.window?.screen.nativeScale {
                 if nativeScale > 1 {
                     requestSize.width *= nativeScale
@@ -170,9 +170,9 @@ class MovieListViewController: UITableViewController,SearchOptionsViewController
             }
             
             if let backdropURL = movieItem.backdropURL(requestSize) {
-                movieCell.backdropImageView.af_setImageWithURL(backdropURL)
+                movieCell.backdropImageView.af_setImage(withURL: backdropURL)
             } else if let posterURL = movieItem.posterURL(requestSize) {
-                movieCell.backdropImageView.af_setImageWithURL(posterURL)
+                movieCell.backdropImageView.af_setImage(withURL: posterURL)
             }
         }
         return cell
@@ -181,18 +181,18 @@ class MovieListViewController: UITableViewController,SearchOptionsViewController
     
     // MARK: - Scroll View
 
-    override func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         let topOffset = topLayoutGuide.length
         let headerFrame = searchOptionsView.frame
         if decelerate && scrollView.contentOffset.y < -(topOffset + 44) {
-            UIView.animateWithDuration(searchOptionsAnimationDuration, delay:searchOptionsAnimationDelay, options:searchOptionsAnimationOptions,  animations: {
+            UIView.animate(withDuration: searchOptionsAnimationDuration, delay:searchOptionsAnimationDelay, options:searchOptionsAnimationOptions,  animations: {
                  scrollView.contentInset = UIEdgeInsetsMake(headerFrame.size.height + topOffset, 0, 0, 0)
                 }, completion: {
                     (completed: Bool) in
                     self.showingSearchOptions = true
             })
         } else {
-            UIView.animateWithDuration(searchOptionsAnimationDuration, delay:searchOptionsAnimationDelay, options:searchOptionsAnimationOptions, animations: {
+            UIView.animate(withDuration: searchOptionsAnimationDuration, delay:searchOptionsAnimationDelay, options:searchOptionsAnimationOptions, animations: {
                 scrollView.contentInset = UIEdgeInsetsMake(topOffset, 0, 0, 0)
                 }, completion: {
                     (completed: Bool) in
@@ -203,7 +203,7 @@ class MovieListViewController: UITableViewController,SearchOptionsViewController
     
     // MARK: - SearchOptionsViewControllerDelegate
     
-    func searchOptionsViewController(ctrl: SearchOptionsViewController, updateMovieSearchRequest: MovieSearchRequest) {
+    func searchOptionsViewController(_ ctrl: SearchOptionsViewController, updateMovieSearchRequest: MovieSearchRequest) {
         self.performSearch(updateMovieSearchRequest)
     }
 }
