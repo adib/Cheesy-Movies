@@ -34,6 +34,5 @@
 - `assets` – original files for the icon and button glyphs.
 - `Pods` – Cocoapods-managed sources.
 
-
-Copyright(C) 2016 Sasmito Adibowo. All rights reserved.
+Copyright(C) 2016 [Sasmito Adibowo](http://cutecoder.org). Licensed under GPL v3 – see `LICENSE.md` for details.
 
