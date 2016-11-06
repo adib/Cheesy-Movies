@@ -200,6 +200,7 @@
 				TargetAttributes = {
 					C0FE2EE11CD459E000A73CA6 = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = F3VP86DSRS;
 						LastSwiftMigration = 0810;
 					};
 				};
@@ -438,6 +439,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = F3VP86DSRS;
 				INFOPLIST_FILE = BadFlix/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.basilsalad.BadFlix;
@@ -452,6 +454,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = F3VP86DSRS;
 				INFOPLIST_FILE = BadFlix/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.basilsalad.BadFlix;
