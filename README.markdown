@@ -11,10 +11,14 @@
 - Share the movie’s web page to social media, e-mail, or other apps.
 - Supports the iPhone, iPad, and iPad Pro (also iPod touch too).
 
+<img width="512" alt="Cheesy Movies Screenshot" src="https://cloud.githubusercontent.com/assets/176081/20036247/3f665436-a43e-11e6-965e-29764362bda5.png">
+
+Get it [on the App Store](https://itunes.apple.com/app/cheesy-movies/id1109874238?mt=8&at=10lvzo&ct=cheesy_movies-github-readme).
+
 ## Requirements
 
  - iOS 9.3
- - Xcode 7.3
+ - Xcode 8.1
  - Internet connection
 
 ### Not mandatory but good to have
