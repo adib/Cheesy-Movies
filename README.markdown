@@ -45,3 +45,21 @@ Copyright(C) 2016 [Sasmito Adibowo](http://cutecoder.org). Licensed under GPL v3
 If you are in a job interview and the company request you to do a *new unpaid project* as part of the hiring process, **feel free to plagiarize this project** — remove my name from the source files and submit them "as is" *without further modification*. For any other uses, the GPL license applies. Please send me a postcard if you get hired because of my work.
 
 Why am I encouraging plagiarism? Mainly because I feel that companies that requests "free work" as part of an interview process are engaging in unethical behavior. They show a **lack of respect of your time** and devalue programmers in general. This practice has reduced the value of artists, musicians, designers, and now the same is coming to software engineers. I feel that it's about time we push back.
+
+## Original Assignment Description
+
+
+>Here we've giving you the opportunity to showcase your talents, both creative and technical, and have some fun! Everyone loves movies, and sometimes we even love BAD movies, "Snakes on a Plane" anyone? So, using the openly available APIs (OMDB, Rotten Tomatoes, etc), create an app that:
+>
+>- Allows the user to search by genre (action, romantic, etc) and year released
+>- Based on the search criteria will return a sortable list of the 10 WORST movies: sortable by rating.
+>- The user can then select a movie and the app will reveal more info about this cinematic travesty: plot, actors, etc
+>
+>Our objectives with this test are 4-fold: Evaluate your technical ability, problem solving approach, ability to deliver a user-friendly system, and how you work with version control systems. Rules of the evaluation: (serious stuff)
+>
+>- you have 48 hours to complete the test
+>- Please create and upload this into a GitHub repository. Please use atomic commits so we can see the blocks of function created.
+>- This app doesn't have to be perfect. There's not enough time to crush every bug. What more important it the main "happy path"
+>
+>This is an opportunity to show off; let's see you skills in using caches, animations, new features, you name it. Bonus points for embedding a trailer!
+
